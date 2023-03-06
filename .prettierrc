@@ -7,5 +7,23 @@
   "trailingComma": "none",
   "arrowParens": "avoid",
   "quoteProps": "as-needed",
-  "endOfLine": "lf"
+  "endOfLine": "lf",
+  "overrides": [
+    {
+      "files": [".prettierrc", ".hintrc", "*.json"],
+      "options": { "parser": "json" }
+    },
+    {
+      "files": "*.md",
+      "options": { "parser": "markdown" }
+    },
+    {
+      "files": "*.html",
+      "options": { "parser": "html" }
+    },
+    {
+      "files": "*.css",
+      "options": { "parser": "css" }
+    }
+  ]
 }
