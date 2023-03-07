@@ -12,5 +12,11 @@ export default defineConfig({
     host: true,
     open: true,
     port: 3000
+  },
+  resolve: {
+    alias: {
+      components: "/src/components",
+      views: "/src/views"
+    }
   }
 });
