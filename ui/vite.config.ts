@@ -29,8 +29,11 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      components: "/src/components",
-      views: "/src/views"
+      views: "/src/views",
+      shared: "/src/shared",
+      database: "/src/database",
+      contexts: "/src/contexts",
+      components: "/src/components"
     }
   }
 });

@@ -15,7 +15,15 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "baseUrl": ".",
+    "paths": {
+      "views/*": ["./src/views/*"],
+      "shared/*": ["./src/shared/*"],
+      "database/*": ["./src/database/*"],
+      "contexts/*": ["./src/contexts/*"],
+      "components/*": ["./src/components/*"]
+    }
   },
   "include": ["src"],
   "exclude": [
