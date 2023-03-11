@@ -10,7 +10,7 @@
   "endOfLine": "lf",
   "overrides": [
     {
-      "files": [".prettierrc", ".hintrc", "*.json"],
+      "files": [".prettierrc", ".eslintrc", ".hintrc", "*.json"],
       "options": { "parser": "json" }
     },
     {
