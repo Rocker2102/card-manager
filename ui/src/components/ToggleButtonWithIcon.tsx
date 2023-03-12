@@ -1,9 +1,7 @@
 import React from "react";
-import {
-  Typography,
-  ToggleButton as MuiToggleButton,
-  ToggleButtonProps as MuiToggleButtonProps
-} from "@mui/material";
+import { ToggleButton as MuiToggleButton, Typography } from "@mui/material";
+
+import type { ToggleButtonProps as MuiToggleButtonProps } from "@mui/material";
 
 type ToggleButtonProps = MuiToggleButtonProps & {
   icon: React.ReactNode;
