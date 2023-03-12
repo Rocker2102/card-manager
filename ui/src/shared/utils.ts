@@ -12,7 +12,7 @@ type WriteToStorageOptions = {
   value: string;
 };
 
-type RemoveFromSTorageOptions = {
+type RemoveFromStorageOptions = {
   storageType?: "local" | "session";
   key: string;
 };
@@ -44,6 +44,6 @@ export function writeToStorage({ storageType = "local", key, value }: WriteToSto
   window[`${storageType}Storage`].setItem(key, value);
 }
 
-export function removeFromStorage({ storageType = "local", key }: RemoveFromSTorageOptions) {
+export function removeFromStorage({ storageType = "local", key }: RemoveFromStorageOptions) {
   window[`${storageType}Storage`].removeItem(key);
 }
