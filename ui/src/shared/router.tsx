@@ -1,17 +1,15 @@
 import React from "react";
 import { createBrowserRouter } from "react-router-dom";
-import CardView from "views/Cards";
-import SettingsView from "views/Settings";
 
-const ROUTER = createBrowserRouter([
+import ErrorView from "views/Error";
+import AppDefaultLayout from "layouts/AppDefault";
+
+const router = createBrowserRouter([
   {
-    path: "/",
-    element: <CardView />
-  },
-  {
-    path: "/settings",
-    element: <SettingsView />
+    path: "/*",
+    element: <AppDefaultLayout />,
+    errorElement: <ErrorView />
   }
 ]);
 
-export default ROUTER;
+export default router;
