@@ -3,7 +3,7 @@ import { createTheme, ThemeOptions } from "@mui/material/styles";
 import { LS_KEYS } from "shared/enum";
 import { readFromStorage } from "shared/utils";
 
-type ThemeMode = "light" | "dark";
+export type ThemeMode = "light" | "dark";
 
 const themeMode: ThemeMode =
   readFromStorage<ThemeMode, ThemeMode>({

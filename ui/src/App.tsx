@@ -1,22 +1,20 @@
-import React from "react";
+import React, { useContext } from "react";
 import { ThemeProvider } from "@mui/system";
 import { RouterProvider } from "react-router-dom";
 import CssBaseline from "@mui/material/CssBaseline";
 
-import APP_THEME from "shared/theme";
 import APP_ROUTER from "shared/router";
-import { AppProvider } from "contexts/App";
-
-console.log("APP_THEME", APP_THEME);
+import { AppContext } from "contexts/App";
 
 export default function App() {
+  const { appTheme } = useContext(AppContext);
+  const [theme] = appTheme;
+
   return (
-    <ThemeProvider theme={APP_THEME}>
+    <ThemeProvider theme={theme}>
       <CssBaseline />
 
-      <AppProvider>
-        <RouterProvider router={APP_ROUTER} />
-      </AppProvider>
+      <RouterProvider router={APP_ROUTER} />
     </ThemeProvider>
   );
 }
