@@ -1,9 +1,7 @@
 import React from "react";
+import BaseContainer from "components/BaseContainer";
+import { Typography } from "@mui/material";
 
 export default function CardView() {
-  return (
-    <div>
-      <h1>Card View</h1>
-    </div>
-  );
+  return <BaseContainer pageTitle="Saved cards"></BaseContainer>;
 }
