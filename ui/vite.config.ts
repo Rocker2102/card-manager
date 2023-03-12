@@ -29,10 +29,12 @@ export default defineConfig({
   },
   resolve: {
     alias: {
+      hooks: "/src/hooks",
       views: "/src/views",
       shared: "/src/shared",
-      database: "/src/database",
+      layouts: "/src/layouts",
       contexts: "/src/contexts",
+      database: "/src/database",
       components: "/src/components"
     }
   }
