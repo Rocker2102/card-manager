@@ -1,6 +1,7 @@
 import Dexie, { Table } from "dexie";
-import { Card, BankAccount } from "./types";
-import { DB_NAME, DB_VERSION } from "../shared/enum";
+import { DB_NAME, DB_VERSION } from "shared/enum";
+
+import type { Card, BankAccount } from "./types";
 
 export class AppDatabase extends Dexie {
   cards!: Table<Card>;

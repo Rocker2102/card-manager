@@ -2,13 +2,10 @@ import React, { useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import { useMatches, useNavigate } from "react-router-dom";
 import styled from "@emotion/styled";
-import Paper from "@mui/material/Paper";
-import BottomNavigation from "@mui/material/BottomNavigation";
-import BottomNavigationAction from "@mui/material/BottomNavigationAction";
+import { Box, Paper, BottomNavigation, BottomNavigationAction } from "@mui/material";
 
 import ErrorView from "views/Error";
 import { ROUTES, ROUTE_COMPONENTS, MENU_OPTIONS } from "shared/routes";
-import { Box } from "@mui/material";
 
 export default function AppDefaultLayout() {
   const navigate = useNavigate();

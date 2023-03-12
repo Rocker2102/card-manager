@@ -1,4 +1,5 @@
 import { createTheme, ThemeOptions } from "@mui/material/styles";
+
 import { LS_KEYS } from "shared/enum";
 import { readFromStorage } from "shared/utils";
 

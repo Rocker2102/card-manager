@@ -1,8 +1,8 @@
 import React from "react";
+import { Settings as SettingsIcon, CreditCard as CreditCardIcon } from "@mui/icons-material";
+
 import CardView from "views/Cards";
 import SettingsView from "views/Settings";
-import SettingsIcon from "@mui/icons-material/Settings";
-import CreditCardIcon from "@mui/icons-material/CreditCard";
 
 type Route = {
   path: string;
