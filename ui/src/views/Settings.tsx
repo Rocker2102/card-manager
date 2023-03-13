@@ -1,20 +1,21 @@
 import React, { useState, useContext } from "react";
-import styled from "@emotion/styled";
-import { Box, Typography, ToggleButtonGroup } from "@mui/material";
-
-import { LS_KEYS } from "shared/enum";
-import { AppContext } from "contexts/App";
-import { writeToStorage } from "shared/utils";
-import BaseContainer from "components/BaseContainer";
-import ToggleButton from "components/ToggleButtonWithIcon";
+import { styled } from "@mui/material/styles";
+import { Stack, Checkbox, Typography, FormControlLabel, ToggleButtonGroup } from "@mui/material";
 import { DarkMode as DarkModeIcon, LightMode as LightModeIcon } from "@mui/icons-material";
 
-import type { ThemeMode } from "shared/theme";
+import { AppContext } from "contexts/App";
+import { saveAppSettings, saveThemeMode } from "shared/helpers";
+import BaseContainer from "components/BaseContainer";
+import ToggleButton from "components/ToggleButtonWithIcon";
 
 export default function CardView() {
-  const { appTheme } = useContext(AppContext);
+  const { appTheme, appSettings } = useContext(AppContext);
   const [theme] = appTheme;
+  const [settings, setSettings] = appSettings;
   const [themeMode, setThemeMode] = useState<ThemeMode>(theme.palette.mode);
+  const [firebaseAdded, setFirebaseAdded] = useState<boolean>(settings.firebaseAdded);
+
+  console.log("Settings.tsx: ", settings, firebaseAdded);
 
   const handleThemeChange = (
     event: React.MouseEvent<HTMLElement>,
@@ -22,39 +23,99 @@ export default function CardView() {
   ): void => {
     if (!newThemeMode || themeMode === newThemeMode) return;
 
-    writeToStorage({ key: LS_KEYS.themeMode, value: newThemeMode });
     setThemeMode(newThemeMode);
+    saveThemeMode(newThemeMode);
+  };
+
+  const handleSettingsChange = (name: keyof AppSettings, newValue: boolean): void => {
+    const newSettings = { ...settings, [name]: newValue };
+    setSettings(newSettings);
+    saveAppSettings(newSettings);
   };
 
   return (
     <BaseContainer pageTitle="Settings">
-      <StyledBox>
-        <Typography variant="overline" display="block">
-          Theme
-        </Typography>
-
-        <ToggleButtonGroup
-          color="primary"
-          value={themeMode}
-          exclusive
-          size="large"
-          onChange={handleThemeChange}
-          aria-label="Theme Mode"
-        >
-          <ToggleButton icon={<LightModeIcon />} text="Light" value="light" />
-          <ToggleButton icon={<DarkModeIcon />} text="Dark" value="dark" />
-        </ToggleButtonGroup>
-
-        {theme.palette.mode !== themeMode && (
-          <Typography variant="caption" color="error.main" display="block" mt={1}>
-            You will see the changes the next time you open the app.
+      <Stack spacing={1}>
+        <StyledDiv>
+          <Typography variant="overline" display="block">
+            Theme
           </Typography>
-        )}
-      </StyledBox>
+
+          <ToggleButtonGroup
+            color="primary"
+            value={themeMode}
+            exclusive
+            onChange={handleThemeChange}
+            aria-label="Theme Mode"
+          >
+            <ToggleButton icon={<LightModeIcon />} text="Light" value="light" />
+            <ToggleButton icon={<DarkModeIcon />} text="Dark" value="dark" />
+          </ToggleButtonGroup>
+
+          <Typography variant="caption" color="error.main" display="block" mt={1}>
+            {theme.palette.mode !== themeMode ? (
+              "You will see the changes the next time you open the app."
+            ) : (
+              <>&nbsp;</>
+            )}
+          </Typography>
+        </StyledDiv>
+
+        <StyledDiv>
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={settings.analytics}
+                onChange={() => handleSettingsChange("analytics", !settings.analytics)}
+                inputProps={{ "aria-label": "controlled" }}
+              />
+            }
+            label={`Analytics ${settings.analytics ? "enabled" : "disabled"}`}
+          />
+          <Typography variant="caption" color="warning.main" display="block">
+            {settings.analytics ? (
+              "No personal or confidential data is ever sent, stored or tracked."
+            ) : (
+              <>&nbsp;</>
+            )}
+          </Typography>
+        </StyledDiv>
+
+        <StyledDiv>
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={firebaseAdded}
+                onChange={() => setFirebaseAdded(!firebaseAdded)}
+                inputProps={{ "aria-label": "controlled" }}
+              />
+            }
+            label={
+              <Typography
+                variant="body1"
+                color={firebaseAdded ? "body" : "error.main"}
+                display="block"
+              >
+                {firebaseAdded ? "Syncing with firebase" : "Firebase sync is off"}
+              </Typography>
+            }
+          />
+
+          {firebaseAdded && (
+            <Typography
+              variant="caption"
+              color={settings.firebaseAdded ? "success.main" : "warning.main"}
+              display="block"
+            >
+              {settings.firebaseAdded ? "Configuration present" : "Not configured"}
+            </Typography>
+          )}
+        </StyledDiv>
+      </Stack>
     </BaseContainer>
   );
 }
 
-const StyledBox = styled(Box)`
+const StyledDiv = styled("div")`
   text-align: left;
 `;
