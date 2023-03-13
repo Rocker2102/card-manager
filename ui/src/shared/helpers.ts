@@ -1,7 +1,7 @@
 import { LS_KEYS, DEFAULT_APP_SETTINGS } from "shared/enum";
 import { readFromStorage, writeToStorage } from "shared/utils";
 
-export default function getAppSettings(): AppSettings {
+export function getAppSettings(): AppSettings {
   return (
     readFromStorage({
       key: LS_KEYS.appSettings,

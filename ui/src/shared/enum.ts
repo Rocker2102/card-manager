@@ -9,5 +9,6 @@ export const LS_KEYS = {
 
 export const DEFAULT_APP_SETTINGS: AppSettings = {
   analytics: false,
-  firbaseAdded: false
+  firebaseAdded: false,
+  firebaseConfig: null
 };
