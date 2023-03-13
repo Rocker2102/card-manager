@@ -1,10 +1,9 @@
 import { createTheme, ThemeOptions } from "@mui/material/styles";
 
-import { getThemeMode } from "./helpers";
+import { getThemeMode } from "shared/helpers";
 
 const themeMode = getThemeMode();
 
-// TODO: Move to a separate file, use from local storage
 const theme: ThemeOptions = {
   palette: {
     mode: themeMode,
