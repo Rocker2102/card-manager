@@ -1,5 +1,5 @@
 import React from "react";
-import styled from "@emotion/styled";
+import { styled } from "@mui/material/styles";
 import { Box, Divider as MuiDivider, Typography } from "@mui/material";
 
 import type { Theme } from "@mui/system";
@@ -9,7 +9,6 @@ type BaseContainerProps = {
   pageTitle?: string;
 };
 
-// FIXME: Remove typescript error
 export default function BaseContainer({ children, pageTitle }: BaseContainerProps) {
   return (
     <StyledBox mt={2}>
