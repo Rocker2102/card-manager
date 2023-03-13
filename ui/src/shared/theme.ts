@@ -1,15 +1,8 @@
 import { createTheme, ThemeOptions } from "@mui/material/styles";
 
-import { LS_KEYS } from "shared/enum";
-import { readFromStorage } from "shared/utils";
+import { getThemeMode } from "./helpers";
 
-export type ThemeMode = "light" | "dark";
-
-const themeMode: ThemeMode =
-  readFromStorage<ThemeMode, ThemeMode>({
-    key: LS_KEYS.themeMode,
-    fallbackValue: "dark"
-  }) ?? "dark";
+const themeMode = getThemeMode();
 
 // TODO: Move to a separate file, use from local storage
 const theme: ThemeOptions = {
