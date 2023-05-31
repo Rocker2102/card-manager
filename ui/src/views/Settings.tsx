@@ -15,8 +15,6 @@ export default function CardView() {
   const [themeMode, setThemeMode] = useState<ThemeMode>(theme.palette.mode);
   const [firebaseAdded, setFirebaseAdded] = useState<boolean>(settings.firebaseAdded);
 
-  console.log("Settings.tsx: ", settings, firebaseAdded);
-
   const handleThemeChange = (
     event: React.MouseEvent<HTMLElement>,
     newThemeMode: null | ThemeMode
