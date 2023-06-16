@@ -47,3 +47,15 @@ export function writeToStorage({ storageType = "local", key, value }: WriteToSto
 export function removeFromStorage({ storageType = "local", key }: RemoveFromStorageOptions) {
   window[`${storageType}Storage`].removeItem(key);
 }
+
+export function isTouchAvailable() {
+  return "ontouchstart" in window || navigator.maxTouchPoints > 0;
+}
+
+export function isMobileView() {
+  return window.matchMedia("(max-width: 480px)").matches;
+}
+
+export function isMobileDevice() {
+  return isTouchAvailable() && isMobileView();
+}
