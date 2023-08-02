@@ -32,6 +32,7 @@ export default defineConfig({
       hooks: "/src/hooks",
       views: "/src/views",
       shared: "/src/shared",
+      typings: "/src/typings",
       layouts: "/src/layouts",
       contexts: "/src/contexts",
       database: "/src/database",
