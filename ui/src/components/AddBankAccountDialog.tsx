@@ -1,10 +1,12 @@
-import * as React from "react";
+import React, { useContext, useState } from "react";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import Grid from "@mui/material/Grid";
 import Select from "@mui/material/Select";
+import Checkbox from "@mui/material/Checkbox";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
+import FormControlLabel from "@mui/material/FormControlLabel";
 import InputLabel from "@mui/material/InputLabel";
 import TextField from "@mui/material/TextField";
 import AppBar from "@mui/material/AppBar";
@@ -13,6 +15,9 @@ import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import Slide from "@mui/material/Slide";
 import { TransitionProps } from "@mui/material/transitions";
+
+import { AppContext } from "contexts/App";
+import LoadingComponent from "components/LoadingComponent";
 
 import CloseIcon from "@mui/icons-material/Close";
 import { Divider } from "@mui/material";
@@ -35,6 +40,28 @@ export default function AddBankAccountDialogDialog({
   isOpen,
   handleClose
 }: AddBankAccountDialogProps) {
+  const { appSettings } = useContext(AppContext);
+  const [saving, setSaving] = useState<boolean>(false);
+  const [hasErrors, setHasErrors] = useState<boolean>(false);
+
+  const [settings] = appSettings;
+
+  const handleSave = async () => {
+    if (saving) {
+      setHasErrors(true);
+      setTimeout(() => {
+        setHasErrors(false);
+      }, 2000);
+      return;
+    }
+
+    setSaving(true);
+    setTimeout(() => {
+      setSaving(false);
+      handleClose();
+    }, 2000);
+  };
+
   return (
     <div>
       <Dialog fullScreen open={isOpen} onClose={handleClose} TransitionComponent={Transition}>
@@ -46,9 +73,15 @@ export default function AddBankAccountDialogDialog({
             <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
               Add new bank account
             </Typography>
-            <Button color="inherit" onClick={handleClose}>
-              Save
-            </Button>
+
+            <LoadingComponent
+              isLoading={saving}
+              component={
+                <Button color="inherit" disabled={hasErrors} onClick={handleSave}>
+                  Save
+                </Button>
+              }
+            />
           </Toolbar>
         </AppBar>
 
@@ -110,6 +143,33 @@ export default function AddBankAccountDialogDialog({
                   <MenuItem value={20}>HDFC Regalia - 0527</MenuItem>
                 </Select>
               </FormControl>
+            </Grid>
+
+            <Grid item xs={12}>
+              <FormControlLabel
+                control={<Checkbox color="success" />}
+                disabled={!settings.firebaseAdded}
+                label="Sync with cloud"
+              />
+
+              {!settings.firebaseAdded && (
+                <Typography variant="caption" display="block" color="warning.main">
+                  Firebase sync is not configured! Configure it in settings to enable this feature.
+                </Typography>
+              )}
+            </Grid>
+
+            <Grid item xs={12} textAlign="center">
+              <Button
+                type="submit"
+                variant="outlined"
+                size="large"
+                color="secondary"
+                disabled={hasErrors || saving}
+                onClick={handleSave}
+              >
+                {saving ? "Saving" : "Save Account"}
+              </Button>
             </Grid>
           </Grid>
         </form>
