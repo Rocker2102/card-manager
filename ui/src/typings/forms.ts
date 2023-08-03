@@ -5,4 +5,5 @@ export type AddBankAccountInput = {
   ifscCode?: string;
   mmid?: string;
   nomineesName?: string;
+  syncWithCloud: boolean;
 };

@@ -32,5 +32,6 @@ export const addBankAccountSchema = Joi.object({
     .allow("")
     .pattern(/^[0-9]{7}$/)
     .messages(getMessagesObj("MMID")),
-  nomineesName: Joi.string().empty("").allow("").min(3).messages(getMessagesObj("Nominee's name"))
+  nomineesName: Joi.string().empty("").allow("").min(3).messages(getMessagesObj("Nominee's name")),
+  syncWithCloud: Joi.boolean().required().messages(getMessagesObj("Sync with cloud"))
 });
