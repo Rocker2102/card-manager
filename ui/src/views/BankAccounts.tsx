@@ -6,12 +6,23 @@ import ButtonFit from "components/ButtonFit";
 import AddBankAccountDialogDialog from "components/AddBankAccountDialog";
 import BaseContainer from "components/BaseContainer";
 
+import type { AddBankAccountInput } from "typings/forms";
+
 export default function CardView() {
   const [isOpen, setIsOpen] = useState(false);
 
+  const handleNewBankAccountCreation = async (data: AddBankAccountInput) => {
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    console.log(data);
+  };
+
   return (
     <BaseContainer pageTitle="Bank Accounts">
-      <AddBankAccountDialogDialog isOpen={isOpen} handleClose={() => setIsOpen(false)} />
+      <AddBankAccountDialogDialog
+        isOpen={isOpen}
+        handleClose={() => setIsOpen(false)}
+        onSave={handleNewBankAccountCreation}
+      />
 
       <Stack spacing={1}>
         <Stack spacing={1} direction="row" justifyContent="space-between">

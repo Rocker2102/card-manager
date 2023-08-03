@@ -40,15 +40,16 @@ const Transition = React.forwardRef(function Transition(
 interface AddBankAccountDialogProps {
   isOpen: boolean;
   handleClose: () => void;
+  onSave: (data: AddBankAccountInput) => Promise<void>;
 }
 
 export default function AddBankAccountDialogDialog({
   isOpen,
-  handleClose
+  handleClose,
+  onSave
 }: AddBankAccountDialogProps) {
   const { appSettings } = useContext(AppContext);
   const [saving, setSaving] = useState<boolean>(false);
-  const [hasErrors, setHasErrors] = useState<boolean>(false);
 
   const { control, formState, handleSubmit, register } = useForm<AddBankAccountInput>({
     mode: "onSubmit",
@@ -60,24 +61,15 @@ export default function AddBankAccountDialogDialog({
 
   const [settings] = appSettings;
 
-  const handleSave = async () => {
-    if (saving) {
-      setHasErrors(true);
-      setTimeout(() => {
-        setHasErrors(false);
-      }, 2000);
-      return;
-    }
-
-    setSaving(true);
-    setTimeout(() => {
+  const onSubmit: SubmitHandler<AddBankAccountInput> = async (data: AddBankAccountInput) => {
+    try {
+      setSaving(true);
+      await onSave(data);
+    } catch {
+      console.log("An error occurred");
+    } finally {
       setSaving(false);
-      handleClose();
-    }, 2000);
-  };
-
-  const onSubmit: SubmitHandler<AddBankAccountInput> = (data: AddBankAccountInput) => {
-    console.log(data);
+    }
   };
 
   return (
@@ -94,7 +86,7 @@ export default function AddBankAccountDialogDialog({
           <LoadingComponent
             isLoading={saving}
             component={
-              <Button color="inherit" disabled={hasErrors} onClick={handleSubmit(onSubmit)}>
+              <Button color="inherit" disabled={saving} onClick={handleSubmit(onSubmit)}>
                 Save
               </Button>
             }
@@ -230,7 +222,7 @@ export default function AddBankAccountDialogDialog({
               variant="outlined"
               size="large"
               color="secondary"
-              disabled={hasErrors || saving}
+              disabled={saving}
             >
               {saving ? "Saving" : "Save Account"}
             </Button>
