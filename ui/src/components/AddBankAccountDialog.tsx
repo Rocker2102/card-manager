@@ -51,10 +51,11 @@ export default function AddBankAccountDialogDialog({
   const { appSettings } = useContext(AppContext);
   const [saving, setSaving] = useState<boolean>(false);
 
-  const { control, formState, handleSubmit, register } = useForm<AddBankAccountInput>({
+  const { control, formState, handleSubmit, register, reset } = useForm<AddBankAccountInput>({
     mode: "onSubmit",
     resolver: joiResolver(addBankAccountSchema),
     defaultValues: {
+      bankName: "",
       syncWithCloud: false
     }
   });
@@ -65,6 +66,9 @@ export default function AddBankAccountDialogDialog({
     try {
       setSaving(true);
       await onSave(data);
+
+      reset();
+      handleClose();
     } catch {
       console.log("An error occurred");
     } finally {
