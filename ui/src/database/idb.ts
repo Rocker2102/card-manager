@@ -12,7 +12,7 @@ export class AppDatabase extends Dexie {
 
     this.version(DB_VERSION).stores({
       cards: "++id, network, type, number, name, expiry",
-      bankAccounts: "++id, bankName, accountNumber, accountType, name"
+      bankAccounts: "++id, bankName, number, type, holdersName"
     });
   }
 }

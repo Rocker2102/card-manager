@@ -1,3 +1,8 @@
+type MonthYear = {
+  month: number;
+  year: number;
+};
+
 export interface Card {
   id: number | string;
   network:
@@ -15,17 +20,25 @@ export interface Card {
   addedAt: string;
   name: string;
   cvv?: string;
-  expiry?: string;
+  expiry?: MonthYear;
+
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface BankAccount {
   id: number | string;
   bankName: string;
-  accountNumber?: string;
-  accountType: "Current" | "Savings";
-  name: string;
-  ifsc: string;
-  lastFourDigits: string;
+  number: string;
+  type: "Current" | "Savings";
+  holdersName: string;
+  ifsc?: string;
   balance?: number;
-  balanceUpdatedAt?: string;
+  balanceUpdatedAt?: Date;
+  mmid?: string;
+  nomineesName?: string;
+  linkedCards?: Array<string>;
+
+  createdAt: Date;
+  updatedAt: Date;
 }
