@@ -41,5 +41,6 @@ export const addBankAccountSchema = Joi.object({
     .allow("")
     .min(3)
     .messages(getMessagesObj("Nominee's name")),
-  syncWithCloud: Joi.boolean().required().messages(getMessagesObj("Sync with cloud"))
+  syncWithCloud: Joi.boolean().required().messages(getMessagesObj("Sync with cloud")),
+  linkCards: Joi.array().items(Joi.string()).optional()
 });

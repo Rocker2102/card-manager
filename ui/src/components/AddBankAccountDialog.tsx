@@ -20,6 +20,7 @@ import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import { joiResolver } from "@hookform/resolvers/joi";
 
 import { AppContext } from "contexts/App";
+import MultiSelect from "components/MultiSelect";
 import LoadingComponent from "components/LoadingComponent";
 import { addBankAccountSchema } from "shared/formSchemas";
 
@@ -43,6 +44,11 @@ interface AddBankAccountDialogProps {
   onSave: (data: AddBankAccountInput) => Promise<void>;
 }
 
+const options = {
+  "1": "HDFC Millenia - XX 2726",
+  "2": "SBI Cashback - XX 1216"
+};
+
 export default function AddBankAccountDialogDialog({
   isOpen,
   handleClose,
@@ -51,16 +57,19 @@ export default function AddBankAccountDialogDialog({
   const { appSettings } = useContext(AppContext);
   const [saving, setSaving] = useState<boolean>(false);
 
-  const { control, formState, handleSubmit, register, reset } = useForm<AddBankAccountInput>({
-    mode: "onSubmit",
-    resolver: joiResolver(addBankAccountSchema),
-    defaultValues: {
-      bankName: "",
-      syncWithCloud: false
-    }
-  });
+  const { control, formState, handleSubmit, setValue, register, reset } =
+    useForm<AddBankAccountInput>({
+      mode: "onSubmit",
+      resolver: joiResolver(addBankAccountSchema),
+      defaultValues: {
+        bankName: "",
+        syncWithCloud: false,
+        linkCards: []
+      }
+    });
 
   const [settings] = appSettings;
+  const [linkedCards, setLinkedCards] = useState<string[]>([]);
 
   const onSubmit: SubmitHandler<AddBankAccountInput> = async (data: AddBankAccountInput) => {
     try {
@@ -74,6 +83,11 @@ export default function AddBankAccountDialogDialog({
     } finally {
       setSaving(false);
     }
+  };
+
+  const handleLinkCardsChange = (arr: string[]) => {
+    setLinkedCards(arr);
+    setValue("linkCards", arr);
   };
 
   return (
@@ -105,7 +119,7 @@ export default function AddBankAccountDialogDialog({
               <InputLabel id="bank-name">Bank Name *</InputLabel>
               <Select
                 labelId="bank-name"
-                label="Bank Name"
+                label="Bank Name *"
                 inputProps={{ ...register("bankName") }}
                 defaultValue=""
                 error={Boolean(formState.errors.bankName)}
@@ -184,13 +198,15 @@ export default function AddBankAccountDialogDialog({
 
         <Grid container spacing={2} sx={{ p: 2 }}>
           <Grid item xs={12} md={4}>
-            <FormControl fullWidth>
-              <InputLabel id="link-existing-name">Link existing cards</InputLabel>
-              <Select labelId="link-existing-name" label="Link existing cards" defaultValue="">
-                <MenuItem value={10}>HDFC Milennia - 0044</MenuItem>
-                <MenuItem value={20}>HDFC Regalia - 0527</MenuItem>
-              </Select>
-            </FormControl>
+            <MultiSelect
+              options={options}
+              labelId="link-cards"
+              label="Link Cards"
+              helperText="Select your existing cards to link with this account"
+              formControlProps={{ fullWidth: true }}
+              selected={linkedCards}
+              setSelected={handleLinkCardsChange}
+            />
           </Grid>
 
           <Grid item xs={12}>

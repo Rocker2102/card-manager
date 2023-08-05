@@ -6,4 +6,5 @@ export type AddBankAccountInput = {
   mmid?: string;
   nomineesName?: string;
   syncWithCloud: boolean;
+  linkCards: Array<string>;
 };
