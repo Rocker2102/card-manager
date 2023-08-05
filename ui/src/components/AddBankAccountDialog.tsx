@@ -77,6 +77,7 @@ export default function AddBankAccountDialogDialog({
       await onSave(data);
 
       reset();
+      setLinkedCards([]);
       handleClose();
     } catch {
       console.log("An error occurred");
@@ -138,6 +139,7 @@ export default function AddBankAccountDialogDialog({
             <FormControl fullWidth>
               <TextField
                 label="Account number *"
+                type="number"
                 inputProps={{ ...register("accountNumber") }}
                 error={Boolean(formState.errors.accountNumber)}
                 helperText={formState.errors.accountNumber?.message}
