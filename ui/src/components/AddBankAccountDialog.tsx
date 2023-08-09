@@ -140,7 +140,7 @@ export default function AddBankAccountDialogDialog({
               <TextField
                 label="Account number *"
                 type="number"
-                inputProps={{ ...register("accountNumber") }}
+                inputProps={{ pattern: "\\d*", min: 0, ...register("accountNumber") }}
                 error={Boolean(formState.errors.accountNumber)}
                 helperText={formState.errors.accountNumber?.message}
               />
