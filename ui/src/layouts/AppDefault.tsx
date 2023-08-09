@@ -5,6 +5,7 @@ import styled from "@emotion/styled";
 import { Box, Paper, BottomNavigation, BottomNavigationAction } from "@mui/material";
 
 import ErrorView from "views/Error";
+import { AUTH_ROUTE_PREFIX } from "shared/enum";
 import { ROUTES, ROUTE_COMPONENTS, MENU_OPTIONS } from "shared/routes";
 
 export default function AppDefaultLayout() {
@@ -24,7 +25,7 @@ export default function AppDefaultLayout() {
       <Content component="div" sx={{ bgcolor: "background.default" }}>
         <Routes>
           {ROUTES.map(({ key, path }) => (
-            <Route key={key} path={path} element={ROUTE_COMPONENTS[key]} />
+            <Route key={key} path={`${AUTH_ROUTE_PREFIX}${path}`} element={ROUTE_COMPONENTS[key]} />
           ))}
           <Route path="*" element={<ErrorView />}></Route>
         </Routes>
@@ -36,7 +37,7 @@ export default function AppDefaultLayout() {
             <BottomNavigationAction
               key={actionPath}
               label={MENU_OPTIONS[actionPath].label}
-              value={actionPath}
+              value={`${AUTH_ROUTE_PREFIX}${actionPath}`}
               icon={MENU_OPTIONS[actionPath].icon}
             />
           ))}

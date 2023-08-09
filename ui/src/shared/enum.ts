@@ -12,3 +12,5 @@ export const DEFAULT_APP_SETTINGS: AppSettings = {
   firebaseAdded: false,
   firebaseConfig: null
 };
+
+export const AUTH_ROUTE_PREFIX = "/auth";

@@ -10,11 +10,11 @@ export const AppContext = createContext({
   /* eslint-enable */
 });
 
-export type AppProvider = {
+export type AppProviderProps = {
   children?: React.ReactNode;
 };
 
-export function AppProvider({ children }: AppProvider) {
+export function AppProvider({ children }: AppProviderProps) {
   const [theme, setTheme] = useState<typeof APP_THEME>(APP_THEME);
   const [settings, setSettings] = useState<AppSettings>(getAppSettings());
 
