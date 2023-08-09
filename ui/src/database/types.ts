@@ -3,7 +3,17 @@ type MonthYear = {
   year: number;
 };
 
-export interface Card {
+interface Timestamps {
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+interface Syncable {
+  syncedAt?: Date;
+  syncEnabled: boolean;
+}
+
+export interface Card extends Timestamps, Syncable {
   id: number | string;
   network:
     | "American Express"
@@ -21,12 +31,9 @@ export interface Card {
   name: string;
   cvv?: string;
   expiry?: MonthYear;
-
-  createdAt: Date;
-  updatedAt: Date;
 }
 
-export interface BankAccount {
+export interface BankAccount extends Timestamps, Syncable {
   id: number | string;
   bankName: string;
   number: string;
@@ -38,7 +45,4 @@ export interface BankAccount {
   mmid?: string;
   nomineesName?: string;
   linkedCards?: Array<string>;
-
-  createdAt: Date;
-  updatedAt: Date;
 }
