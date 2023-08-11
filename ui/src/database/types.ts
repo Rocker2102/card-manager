@@ -46,3 +46,12 @@ export interface BankAccount extends Timestamps, Syncable {
   nomineesName?: string;
   linkedCards?: Array<string>;
 }
+
+export interface User extends Timestamps {
+  id: number | string;
+  name: string;
+  email?: string;
+  photoURL?: string;
+  mobileNumber?: string;
+  password: string;
+}
