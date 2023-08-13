@@ -5,12 +5,11 @@ import TextField from "@mui/material/TextField";
 import type { TextFieldProps } from "@mui/material/TextField";
 
 interface PinInputProps {
-  props: TextFieldProps;
   inputProps?: React.InputHTMLAttributes<HTMLInputElement>;
 }
 
-export default function PinInput({ props, inputProps }: PinInputProps) {
-  return <StyledInput {...props} inputProps={{ pattern: "\\d*", min: 0, ...inputProps }} />;
+export default function PinInput({ inputProps = {}, ...props }: PinInputProps & TextFieldProps) {
+  return <StyledInput inputProps={{ pattern: "\\d*", min: 0, ...inputProps }} {...props} />;
 }
 
 const StyledInput = styled(TextField)`
