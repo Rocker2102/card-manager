@@ -14,10 +14,14 @@ import PinInput from "components/PinInput";
 
 import type { AddUser } from "typings/forms";
 
-export default function Welcome() {
+interface WelcomeProps {
+  handleSave: (data: AddUser) => Promise<void>;
+}
+
+export default function Welcome({ handleSave }: WelcomeProps) {
   const [saving, setSaving] = useState<boolean>(false);
 
-  const { formState, handleSubmit, register, reset } = useForm<AddUser>({
+  const { formState, handleSubmit, register } = useForm<AddUser>({
     mode: "onSubmit",
     resolver: joiResolver(addUserSchema)
   });
@@ -25,10 +29,7 @@ export default function Welcome() {
   const onSubmit: SubmitHandler<AddUser> = async (data: AddUser) => {
     try {
       setSaving(true);
-      // await onSave(data);
-      console.log(data);
-
-      reset();
+      await handleSave(data);
     } catch {
       console.log("An error occurred");
     } finally {
@@ -101,7 +102,7 @@ export default function Welcome() {
             <Grid item xs={12}>
               <Typography variant="body2" color="text.secondary">
                 Don&apos;t worry, all your data is stored locally on your device &amp; will never be
-                uploaded anywhere.
+                shared with anyone.
               </Typography>
 
               <br />
@@ -113,8 +114,8 @@ export default function Welcome() {
             </Grid>
           </Grid>
 
-          <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }} endIcon={null}>
-            Continue
+          <Button type="submit" fullWidth variant="contained" sx={{ mt: 3 }} disabled={saving}>
+            {saving ? "Saving" : "Continue"}
           </Button>
         </Box>
       </Grid>

@@ -1,16 +1,20 @@
 import React, { useContext, useEffect, useState } from "react";
+import { v4 } from "uuid";
 import { Routes, Route } from "react-router-dom";
 import { useMatches, useNavigate } from "react-router-dom";
 import styled from "@emotion/styled";
 import { Box, Paper, BottomNavigation, BottomNavigationAction } from "@mui/material";
 
-import { hasAnyUserRegistered } from "database/userService";
+import { hash } from "shared/utils";
+import { hasAnyUserRegistered, addUser } from "database/userService";
 import { AuthContext } from "contexts/Auth";
 import LoginView from "views/Login";
 import ErrorView from "views/Error";
 import WelcomeView from "views/Welcome";
 import { AUTH_ROUTE_PREFIX, QUERY_STATUS } from "shared/enum";
 import { ROUTES, ROUTE_COMPONENTS, MENU_OPTIONS } from "shared/routes";
+
+import type { AddUser } from "typings/forms";
 
 export default function AppDefaultLayout() {
   const { loggedIn } = useContext(AuthContext);
@@ -30,6 +34,25 @@ export default function AppDefaultLayout() {
   const checkUserStatus = async () => {
     const user = await hasAnyUserRegistered();
     setUserExists(user ? QUERY_STATUS.SUCCESS : QUERY_STATUS.ERROR);
+  };
+
+  const handleNewUserCreation = async (data: AddUser) => {
+    if (await hasAnyUserRegistered()) {
+      console.warn("Looks like a user already exists! Please check the database.");
+      console.warn("Only a single user is allowed to be registered currently.");
+      return;
+    }
+
+    const currDate = new Date();
+    await addUser({
+      ...data,
+      id: v4(),
+      password: await hash(data.password),
+      createdAt: currDate,
+      updatedAt: currDate
+    });
+
+    setTimeout(() => window.location.reload(), 500);
   };
 
   useEffect(() => {
@@ -54,7 +77,7 @@ export default function AppDefaultLayout() {
           )}
 
           {!loggedIn && userExists === QUERY_STATUS.ERROR && (
-            <Route path="*" element={<WelcomeView />}></Route>
+            <Route path="*" element={<WelcomeView handleSave={handleNewUserCreation} />}></Route>
           )}
 
           {loggedIn && <Route path="*" element={<ErrorView />}></Route>}
