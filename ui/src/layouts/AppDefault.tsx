@@ -5,7 +5,7 @@ import { useMatches, useNavigate } from "react-router-dom";
 import styled from "@emotion/styled";
 import { Box, Paper, BottomNavigation, BottomNavigationAction } from "@mui/material";
 
-import { hash } from "shared/utils";
+import { hash } from "helpers/bcrypt";
 import { hasAnyUserRegistered, addUser } from "database/userService";
 import { AuthContext } from "contexts/Auth";
 import LoginView from "views/Login";
