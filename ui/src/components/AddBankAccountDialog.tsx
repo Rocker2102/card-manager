@@ -41,7 +41,7 @@ const Transition = React.forwardRef(function Transition(
 interface AddBankAccountDialogProps {
   isOpen: boolean;
   handleClose: () => void;
-  onSave: (data: AddBankAccountInput) => Promise<void>;
+  handleSave: (data: AddBankAccountInput) => Promise<void>;
 }
 
 const options = {
@@ -52,7 +52,7 @@ const options = {
 export default function AddBankAccountDialogDialog({
   isOpen,
   handleClose,
-  onSave
+  handleSave
 }: AddBankAccountDialogProps) {
   const { appSettings } = useContext(AppContext);
   const [saving, setSaving] = useState<boolean>(false);
@@ -74,7 +74,7 @@ export default function AddBankAccountDialogDialog({
   const onSubmit: SubmitHandler<AddBankAccountInput> = async (data: AddBankAccountInput) => {
     try {
       setSaving(true);
-      await onSave(data);
+      await handleSave(data);
 
       reset();
       setLinkedCards([]);

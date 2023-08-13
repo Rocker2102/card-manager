@@ -21,7 +21,7 @@ export default function CardView() {
       <AddBankAccountDialogDialog
         isOpen={isOpen}
         handleClose={() => setIsOpen(false)}
-        onSave={handleNewBankAccountCreation}
+        handleSave={handleNewBankAccountCreation}
       />
 
       <Stack spacing={1}>
