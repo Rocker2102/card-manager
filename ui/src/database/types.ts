@@ -14,7 +14,7 @@ interface Syncable {
 }
 
 export interface Card extends Timestamps, Syncable {
-  id: number | string;
+  id: string;
   network:
     | "American Express"
     | "Diners Club"
@@ -34,7 +34,7 @@ export interface Card extends Timestamps, Syncable {
 }
 
 export interface BankAccount extends Timestamps, Syncable {
-  id: number | string;
+  id: string;
   bankName: string;
   number: string;
   type: "Current" | "Savings";
@@ -48,7 +48,7 @@ export interface BankAccount extends Timestamps, Syncable {
 }
 
 export interface User extends Timestamps {
-  id: number | string;
+  id: string;
   name: string;
   email?: string;
   photoURL?: string;
