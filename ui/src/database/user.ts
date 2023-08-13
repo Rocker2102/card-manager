@@ -11,7 +11,7 @@ export class UserDatabase extends Dexie {
     super(USER_DB_NAME);
 
     this.version(USER_DB_VERSION).stores({
-      users: "++id, name, email, mobileNumber"
+      users: "++id"
     });
   }
 }
