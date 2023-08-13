@@ -4,14 +4,13 @@ import styled from "@emotion/styled";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
-import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 
-export default function SignIn() {
+export default function Login() {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const data = new FormData(e.currentTarget);
@@ -19,7 +18,7 @@ export default function SignIn() {
 
     if (!pin) return;
 
-    alert("You entered: " + pin);
+    console.log("You entered:", pin);
   };
 
   return (
@@ -47,14 +46,6 @@ export default function SignIn() {
           <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
             Confirm
           </Button>
-
-          <Grid container justifyContent="flex-end">
-            <Grid item>
-              <Link href="#" variant="body2">
-                First time here?
-              </Link>
-            </Grid>
-          </Grid>
         </Box>
       </Grid>
     </Grid>
