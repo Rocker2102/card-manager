@@ -5,8 +5,8 @@ import { useMatches, useNavigate } from "react-router-dom";
 import styled from "@emotion/styled";
 import { Box, Paper, BottomNavigation, BottomNavigationAction } from "@mui/material";
 
-import { hash } from "helpers/bcrypt";
-import { hasAnyUserRegistered, addUser } from "database/userService";
+import { hash, compare } from "helpers/bcrypt";
+import { hasAnyUserRegistered, addUser, getUser } from "database/userService";
 import { AuthContext } from "contexts/Auth";
 import LoginView from "views/Login";
 import ErrorView from "views/Error";
@@ -17,7 +17,7 @@ import { ROUTES, ROUTE_COMPONENTS, MENU_OPTIONS } from "shared/routes";
 import type { AddUser } from "typings/forms";
 
 export default function AppDefaultLayout() {
-  const { loggedIn } = useContext(AuthContext);
+  const { loggedIn, login, setUserData } = useContext(AuthContext);
 
   const navigate = useNavigate();
   const [firstMatch] = useMatches();
@@ -55,6 +55,22 @@ export default function AppDefaultLayout() {
     setTimeout(() => window.location.reload(), 500);
   };
 
+  const handleLogin = async (pin: string) => {
+    const user = await getUser();
+    const isPinCorrect = await compare(pin, user.password);
+
+    if (!isPinCorrect) {
+      throw new Error("Incorrect PIN!");
+    }
+
+    login();
+    setUserData(user);
+
+    const [firstRoute] = ROUTES;
+    navigate(`${AUTH_ROUTE_PREFIX}${firstRoute.path}`);
+    setPath(`${AUTH_ROUTE_PREFIX}${firstRoute.path}`);
+  };
+
   useEffect(() => {
     checkUserStatus();
   }, []);
@@ -73,7 +89,7 @@ export default function AppDefaultLayout() {
             ))}
 
           {!loggedIn && userExists === QUERY_STATUS.SUCCESS && (
-            <Route path="*" element={<LoginView />}></Route>
+            <Route path="*" element={<LoginView handleLogin={handleLogin} />}></Route>
           )}
 
           {!loggedIn && userExists === QUERY_STATUS.ERROR && (

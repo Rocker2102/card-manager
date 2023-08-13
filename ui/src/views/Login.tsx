@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
@@ -8,15 +8,30 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 
 import PinInput from "components/PinInput";
 
-export default function Login() {
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+interface LoginViewProps {
+  handleLogin: (pin: string) => Promise<void>;
+}
+
+export default function LoginView({ handleLogin }: LoginViewProps) {
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string>("");
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     const data = new FormData(e.currentTarget);
     const pin = data.get("pin")?.toString().trim();
 
     if (!pin) return;
 
-    console.log("You entered:", pin);
+    try {
+      setError("");
+      setLoading(true);
+      await handleLogin(pin);
+    } catch (error) {
+      setError((error as Error).message || "Something went wrong!");
+      setLoading(false);
+    }
   };
 
   return (
@@ -37,12 +52,20 @@ export default function Login() {
             name="pin"
             label="Pin"
             type="number"
-            id="pin"
             inputProps={{ max: 99999 }}
+            error={Boolean(error)}
+            helperText={error}
           />
 
-          <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
-            Confirm
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="success"
+            sx={{ mt: 3, mb: 2 }}
+            disabled={loading}
+          >
+            {loading ? "Checking" : "Confirm"}
           </Button>
         </Box>
       </Grid>
