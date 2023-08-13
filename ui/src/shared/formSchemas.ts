@@ -7,7 +7,8 @@ const getMessagesObj = (fieldName = "Field") => {
     "string.empty": `${fieldName} cannot be blank`,
     "string.pattern.base": `${fieldName} is invalid`,
     "string.min": `${fieldName} is too short`,
-    "string.max": `${fieldName} is too long`
+    "string.max": `${fieldName} is too long`,
+    "string.email": "Please enter a valid email address"
   };
 };
 
@@ -43,4 +44,21 @@ export const addBankAccountSchema = Joi.object({
     .messages(getMessagesObj("Nominee's name")),
   syncWithCloud: Joi.boolean().required().messages(getMessagesObj("Sync with cloud")),
   linkCards: Joi.array().items(Joi.string()).optional()
+});
+
+export const addUserSchema = Joi.object({
+  name: Joi.string().trim().required().min(3).messages(getMessagesObj("Your name")),
+  email: Joi.string()
+    .trim()
+    .empty("")
+    .allow("")
+    .email({ tlds: { allow: false } })
+    .messages(getMessagesObj("Email")),
+  mobileNumber: Joi.string()
+    .trim()
+    .empty("")
+    .allow("")
+    .pattern(/^[0-9]{10}$/)
+    .messages(getMessagesObj("Mobile number")),
+  password: Joi.string().trim().required().min(4).messages(getMessagesObj("Password"))
 });
