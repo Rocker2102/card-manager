@@ -8,7 +8,7 @@ import { saveAppSettings, saveThemeMode } from "shared/helpers";
 import BaseContainer from "components/BaseContainer";
 import ToggleButton from "components/ToggleButtonWithIcon";
 
-export default function CardView() {
+export default function SettingsView() {
   const { appTheme, appSettings } = useContext(AppContext);
   const [theme] = appTheme;
   const [settings, setSettings] = appSettings;

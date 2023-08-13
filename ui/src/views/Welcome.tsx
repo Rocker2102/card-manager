@@ -14,11 +14,11 @@ import PinInput from "components/PinInput";
 
 import type { AddUser } from "typings/forms";
 
-interface WelcomeProps {
+interface WelcomeViewProps {
   handleSave: (data: AddUser) => Promise<void>;
 }
 
-export default function Welcome({ handleSave }: WelcomeProps) {
+export default function WelcomeView({ handleSave }: WelcomeViewProps) {
   const [saving, setSaving] = useState<boolean>(false);
 
   const { formState, handleSubmit, register } = useForm<AddUser>({
