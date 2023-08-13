@@ -31,3 +31,9 @@ type AuthUser = {
 type CryptoStatus = {
   isDecrypted: boolean;
 };
+
+type QueryStatus = {
+  LOADING: "LOADING";
+  SUCCESS: "SUCCESS";
+  ERROR: "ERROR";
+};

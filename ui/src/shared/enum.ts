@@ -16,3 +16,9 @@ export const DEFAULT_APP_SETTINGS: AppSettings = {
 };
 
 export const AUTH_ROUTE_PREFIX = "/auth";
+
+export const QUERY_STATUS: QueryStatus = {
+  LOADING: "LOADING",
+  SUCCESS: "SUCCESS",
+  ERROR: "ERROR"
+};
