@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import styled from "@emotion/styled";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -11,6 +10,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { joiResolver } from "@hookform/resolvers/joi";
 
 import { addUserSchema } from "shared/formSchemas";
+import PinInput from "components/PinInput";
 
 import type { AddUser } from "typings/forms";
 
@@ -64,12 +64,12 @@ export default function Welcome() {
 
             <Grid item xs={12}>
               <PinInput
+                inputProps={{ max: 99999, ...register("password") }}
                 required
                 fullWidth
                 name="password"
                 label="Pin"
                 type="number"
-                inputProps={{ pattern: "\\d*", min: 0, max: 99999, ...register("password") }}
                 error={Boolean(formState.errors.password)}
                 helperText={formState.errors.password?.message}
               />
@@ -121,17 +121,3 @@ export default function Welcome() {
     </Grid>
   );
 }
-
-const PinInput = styled(TextField)`
-  /* Chrome, Safari, Edge, Opera */
-  input::-webkit-outer-spin-button,
-  input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
-
-  /* Firefox */
-  input[type="number"] {
-    -moz-appearance: textfield;
-  }
-`;

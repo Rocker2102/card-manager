@@ -1,14 +1,12 @@
 import React from "react";
-
-import styled from "@emotion/styled";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+
+import PinInput from "components/PinInput";
 
 export default function Login() {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -40,7 +38,7 @@ export default function Login() {
             label="Pin"
             type="number"
             id="pin"
-            inputProps={{ pattern: "\\d*", min: 0, max: 99999 }}
+            inputProps={{ max: 99999 }}
           />
 
           <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
@@ -51,17 +49,3 @@ export default function Login() {
     </Grid>
   );
 }
-
-const PinInput = styled(TextField)`
-  /* Chrome, Safari, Edge, Opera */
-  input::-webkit-outer-spin-button,
-  input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
-
-  /* Firefox */
-  input[type="number"] {
-    -moz-appearance: textfield;
-  }
-`;
