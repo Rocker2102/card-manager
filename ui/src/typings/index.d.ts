@@ -16,3 +16,24 @@ type AppSettings = {
 };
 
 type ThemeMode = "light" | "dark";
+
+type AuthUser = {
+  id: string;
+  name: string;
+  email?: string;
+  photoURL?: string;
+  mobileNumber?: string;
+
+  createdAt: Date;
+  updatedAt: Date;
+};
+
+type CryptoStatus = {
+  isDecrypted: boolean;
+};
+
+type QueryStatus = {
+  LOADING: "LOADING";
+  SUCCESS: "SUCCESS";
+  ERROR: "ERROR";
+};

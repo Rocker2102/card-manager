@@ -8,3 +8,10 @@ export type AddBankAccountInput = {
   syncWithCloud: boolean;
   linkCards: Array<string>;
 };
+
+export type AddUser = {
+  name: string;
+  email?: string;
+  mobileNumber?: string;
+  password: string;
+};

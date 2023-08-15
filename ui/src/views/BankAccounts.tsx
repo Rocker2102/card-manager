@@ -8,7 +8,7 @@ import BaseContainer from "components/BaseContainer";
 
 import type { AddBankAccountInput } from "typings/forms";
 
-export default function CardView() {
+export default function BankAccountsView() {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleNewBankAccountCreation = async (data: AddBankAccountInput) => {
@@ -21,7 +21,7 @@ export default function CardView() {
       <AddBankAccountDialogDialog
         isOpen={isOpen}
         handleClose={() => setIsOpen(false)}
-        onSave={handleNewBankAccountCreation}
+        handleSave={handleNewBankAccountCreation}
       />
 
       <Stack spacing={1}>
