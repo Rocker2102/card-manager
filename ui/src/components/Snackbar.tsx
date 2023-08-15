@@ -6,8 +6,11 @@ import MuiSnackbar from "@mui/material/Snackbar";
 
 import { TOAST_AUTO_HIDE_DURATION } from "shared/enum";
 
+import type { AlertProps } from "@mui/material";
+
 interface SnackbarProps {
   open: boolean;
+  type?: AlertProps["severity"];
   hideAfter?: number;
   message: string;
   handleClose: () => void;
@@ -19,6 +22,7 @@ export default function Snackbar({
   handleClose,
   hideAfter,
   message,
+  type = "info",
   showCloseButton = true
 }: SnackbarProps) {
   return (
@@ -34,7 +38,7 @@ export default function Snackbar({
         ) : null
       }
     >
-      <Alert onClose={handleClose} severity="success" sx={{ width: "100%" }}>
+      <Alert onClose={handleClose} severity={type} sx={{ width: "100%" }}>
         {message}
       </Alert>
     </MuiSnackbar>
