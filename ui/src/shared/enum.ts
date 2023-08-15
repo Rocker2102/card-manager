@@ -22,3 +22,5 @@ export const QUERY_STATUS: QueryStatus = {
   SUCCESS: "SUCCESS",
   ERROR: "ERROR"
 };
+
+export const TOAST_AUTO_HIDE_DURATION = 3000;
