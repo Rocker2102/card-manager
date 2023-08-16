@@ -36,6 +36,7 @@ export default function useToast(defaultDuration = TOAST_AUTO_HIDE_DURATION) {
       handleClose={handleClose}
       message={message}
       hideAfter={duration.current}
+      showCloseButton={false}
     />
   );
 
@@ -46,7 +47,6 @@ export default function useToast(defaultDuration = TOAST_AUTO_HIDE_DURATION) {
       handleClose={handleClose}
       message={message}
       hideAfter={duration.current}
-      showCloseButton
     />
   );
 

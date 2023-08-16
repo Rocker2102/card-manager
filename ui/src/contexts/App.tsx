@@ -21,7 +21,7 @@ export type AppProviderProps = {
 export function AppProvider({ children }: AppProviderProps) {
   const [theme, setTheme] = useState<typeof APP_THEME>(APP_THEME);
   const [settings, setSettings] = useState<AppSettings>(getAppSettings());
-  const { showToast, Toast } = useToast();
+  const { showToast, ToastWithCloseButton } = useToast();
 
   return (
     <AppContext.Provider
@@ -31,7 +31,7 @@ export function AppProvider({ children }: AppProviderProps) {
         showToast
       }}
     >
-      <Toast />
+      <ToastWithCloseButton />
       {children}
     </AppContext.Provider>
   );
