@@ -7,6 +7,7 @@ import { Box, Paper, BottomNavigation, BottomNavigationAction } from "@mui/mater
 
 import { hash, compare } from "helpers/bcrypt";
 import { hasAnyUserRegistered, addUser, getUser } from "database/userService";
+import { AppContext } from "contexts/App";
 import { AuthContext } from "contexts/Auth";
 import LoginView from "views/Login";
 import ErrorView from "views/Error";
@@ -18,6 +19,7 @@ import type { AddUser } from "typings/forms";
 
 export default function AppDefaultLayout() {
   const { loggedIn, login, setUserData } = useContext(AuthContext);
+  const { showLoadingOverlay, hideLoadingOverlay } = useContext(AppContext);
 
   const navigate = useNavigate();
   const [firstMatch] = useMatches();
@@ -32,8 +34,17 @@ export default function AppDefaultLayout() {
   };
 
   const checkUserStatus = async () => {
-    const user = await hasAnyUserRegistered();
-    setUserExists(user ? QUERY_STATUS.SUCCESS : QUERY_STATUS.ERROR);
+    const userExists = await hasAnyUserRegistered();
+
+    if (!userExists) {
+      return setUserExists(QUERY_STATUS.ERROR);
+    }
+
+    const user = await getUser();
+    console.log(user);
+
+    hideLoadingOverlay();
+    setUserExists(QUERY_STATUS.SUCCESS);
   };
 
   const handleNewUserCreation = async (data: AddUser) => {
@@ -72,6 +83,7 @@ export default function AppDefaultLayout() {
   };
 
   useEffect(() => {
+    showLoadingOverlay();
     checkUserStatus();
   }, []);
 
