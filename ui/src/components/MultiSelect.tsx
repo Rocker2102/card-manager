@@ -24,7 +24,7 @@ type OptionType = {
   [id: string]: string;
 };
 
-interface MultiSelectProps {
+type MultiSelectProps = {
   options: OptionType;
   labelId: string;
   name?: string;
@@ -35,7 +35,7 @@ interface MultiSelectProps {
   helperTextProps?: FormHelperTextProps;
   formControlProps?: FormControlProps;
   selectProps?: SelectProps;
-}
+};
 
 export default function MultiSelect({
   options,

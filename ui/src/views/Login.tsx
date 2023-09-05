@@ -8,9 +8,9 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 
 import PinInput from "components/PinInput";
 
-interface LoginViewProps {
+type LoginViewProps = {
   handleLogin: (pin: string) => Promise<void>;
-}
+};
 
 export default function LoginView({ handleLogin }: LoginViewProps) {
   const [loading, setLoading] = useState<boolean>(false);

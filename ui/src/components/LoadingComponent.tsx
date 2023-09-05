@@ -1,12 +1,12 @@
 import React from "react";
 import CircularProgress from "@mui/material/CircularProgress";
 
-interface LoadingComponentProps {
+type LoadingComponentProps = {
   isLoading: boolean;
   component: React.ReactElement;
   size?: string;
   color?: "inherit" | "primary" | "secondary" | "success" | "error" | "info" | "warning";
-}
+};
 
 export default function LoadingComponent({
   isLoading,

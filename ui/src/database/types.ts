@@ -3,15 +3,15 @@ type MonthYear = {
   year: number;
 };
 
-interface Timestamps {
+type Timestamps = {
   createdAt: Date;
   updatedAt: Date;
-}
+};
 
-interface Syncable {
+type Syncable = {
   syncedAt?: Date;
   syncEnabled: boolean;
-}
+};
 
 export interface Card extends Timestamps, Syncable {
   id: string;

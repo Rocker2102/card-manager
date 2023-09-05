@@ -2,9 +2,9 @@ import React from "react";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
 
-interface LoadingOverlayProps {
+type LoadingOverlayProps = {
   loading: boolean;
-}
+};
 
 export default function LoadingOverlay({ loading }: LoadingOverlayProps) {
   return (

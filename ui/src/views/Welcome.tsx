@@ -14,9 +14,9 @@ import PinInput from "components/PinInput";
 
 import type { AddUser } from "typings/forms";
 
-interface WelcomeViewProps {
+type WelcomeViewProps = {
   handleSave: (data: AddUser) => Promise<void>;
-}
+};
 
 export default function WelcomeView({ handleSave }: WelcomeViewProps) {
   const [saving, setSaving] = useState<boolean>(false);

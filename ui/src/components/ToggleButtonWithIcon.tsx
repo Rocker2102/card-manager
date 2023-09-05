@@ -3,10 +3,10 @@ import { ToggleButton as MuiToggleButton, Typography } from "@mui/material";
 
 import type { ToggleButtonProps as MuiToggleButtonProps } from "@mui/material";
 
-type ToggleButtonProps = MuiToggleButtonProps & {
+interface ToggleButtonProps extends MuiToggleButtonProps {
   icon: React.ReactNode;
   text: string;
-};
+}
 
 export default function ToggleButton({ icon, text, ...props }: ToggleButtonProps) {
   return (

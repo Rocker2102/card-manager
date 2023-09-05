@@ -8,14 +8,14 @@ import { TOAST_AUTO_HIDE_DURATION } from "shared/enum";
 
 import type { AlertProps } from "@mui/material";
 
-interface SnackbarProps {
+type SnackbarProps = {
   open: boolean;
   type?: AlertProps["severity"];
   hideAfter?: number;
   message: string;
   handleClose: () => void;
   showCloseButton?: boolean;
-}
+};
 
 export default function Snackbar({
   open,

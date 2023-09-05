@@ -38,11 +38,11 @@ const Transition = React.forwardRef(function Transition(
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-interface AddBankAccountDialogProps {
+type AddBankAccountDialogProps = {
   isOpen: boolean;
   handleClose: () => void;
   handleSave: (data: AddBankAccountInput) => Promise<void>;
-}
+};
 
 const options = {
   "1": "HDFC Millenia - XX 2726",
