@@ -7,6 +7,7 @@ import Typography from "@mui/material/Typography";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 
 import PinInput from "components/PinInput";
+// import MuiPinInput from "mui-pin-input";
 
 type LoginViewProps = {
   handleLogin: (pin: string) => Promise<void>;
@@ -15,6 +16,7 @@ type LoginViewProps = {
 export default function LoginView({ handleLogin }: LoginViewProps) {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
+  // const [pin, setPin] = useState<string>("");
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -52,10 +54,18 @@ export default function LoginView({ handleLogin }: LoginViewProps) {
             name="pin"
             label="Pin"
             type="number"
-            inputProps={{ max: 99999 }}
+            inputProps={{ max: 99999, style: { textAlign: "center" } }}
             error={Boolean(error)}
             helperText={error}
           />
+          {/*
+          <MuiPinInput
+            name="login-pin"
+            length={4}
+            fieldVariant="outlined"
+            value={pin}
+            setValue={setPin}
+          /> */}
 
           <Button
             type="submit"

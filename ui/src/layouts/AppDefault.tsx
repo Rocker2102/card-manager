@@ -19,7 +19,7 @@ import type { AddUser } from "typings/forms";
 
 export default function AppDefaultLayout() {
   const { loggedIn, login, setUserData } = useContext(AuthContext);
-  const { showLoadingOverlay, hideLoadingOverlay } = useContext(AppContext);
+  const { hideLoadingOverlay } = useContext(AppContext);
 
   const navigate = useNavigate();
   const [firstMatch] = useMatches();
@@ -83,7 +83,7 @@ export default function AppDefaultLayout() {
   };
 
   useEffect(() => {
-    showLoadingOverlay();
+    // showLoadingOverlay();
     checkUserStatus();
   }, []);
 
