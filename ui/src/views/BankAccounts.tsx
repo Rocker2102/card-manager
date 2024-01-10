@@ -14,8 +14,6 @@ export default function BankAccountsView() {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleNewBankAccountCreation = async (data: AddBankAccountInput) => {
-    await new Promise(resolve => setTimeout(resolve, 1000));
-
     const currDate = new Date();
 
     await addAccount({
