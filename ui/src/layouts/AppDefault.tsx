@@ -6,6 +6,7 @@ import styled from "@emotion/styled";
 import { Box, Paper, BottomNavigation, BottomNavigationAction } from "@mui/material";
 
 import { hash, compare } from "helpers/bcrypt";
+import { decrypt, encrypt, generateKey } from "helpers/crypto";
 import { applyEncryption, init } from "database/app";
 import { hasAnyUserRegistered, addUser, getUser } from "database/userService";
 import { AppContext } from "contexts/App";
@@ -13,15 +14,10 @@ import { AuthContext } from "contexts/Auth";
 import LoginView from "views/Login";
 import ErrorView from "views/Error";
 import WelcomeView from "views/Welcome";
-import { AUTH_ROUTE_PREFIX, QUERY_STATUS } from "shared/enum";
+import { AUTH_ROUTE_PREFIX, DB_KEY_LENGTH, QUERY_STATUS } from "shared/enum";
 import { ROUTES, ROUTE_COMPONENTS, MENU_OPTIONS } from "shared/routes";
 
 import type { AddUser } from "typings/forms";
-
-const k = new Uint8Array([
-  1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27,
-  28, 29, 30, 31, 32
-]);
 
 export default function AppDefaultLayout() {
   const { loggedIn, login, setUserData } = useContext(AuthContext);
@@ -41,12 +37,12 @@ export default function AppDefaultLayout() {
 
   const checkUserStatus = async () => {
     const userExists = await hasAnyUserRegistered();
+    hideLoadingOverlay();
 
     if (!userExists) {
       return setUserExists(QUERY_STATUS.ERROR);
     }
 
-    hideLoadingOverlay();
     setUserExists(QUERY_STATUS.SUCCESS);
   };
 
@@ -58,12 +54,17 @@ export default function AppDefaultLayout() {
     }
 
     const currDate = new Date();
+
+    const randomKey = crypto.getRandomValues(new Uint8Array(DB_KEY_LENGTH));
+    const encryptedKey = await encrypt(randomKey, await generateKey(data.password));
+
     await addUser({
       ...data,
       id: v4(),
       password: await hash(data.password),
       createdAt: currDate,
-      updatedAt: currDate
+      updatedAt: currDate,
+      permanentUserSecret: encryptedKey
     });
 
     setTimeout(() => window.location.reload(), 500);
@@ -80,7 +81,8 @@ export default function AppDefaultLayout() {
     login();
     setUserData(user);
 
-    applyEncryption(k);
+    const decryptedKey = await decrypt(user.permanentUserSecret, await generateKey(pin));
+    applyEncryption(new Uint8Array(decryptedKey));
     init();
   };
 
