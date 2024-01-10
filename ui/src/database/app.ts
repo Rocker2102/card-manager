@@ -38,6 +38,8 @@ export function init() {
     cards: "++id, network, type, number, name, expiry",
     bankAccounts: "++id, bankName, number, type, holdersName, *linkedCards"
   });
+
+  db.open();
 }
 
 export default db;
