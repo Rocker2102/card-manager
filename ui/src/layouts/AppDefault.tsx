@@ -1,11 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
 import { v4 } from "uuid";
 import { Routes, Route } from "react-router-dom";
-import { useMatches, useNavigate, useLocation } from "react-router-dom";
+import { useMatches, useNavigate } from "react-router-dom";
 import styled from "@emotion/styled";
 import { Box, Paper, BottomNavigation, BottomNavigationAction } from "@mui/material";
 
 import { hash, compare } from "helpers/bcrypt";
+import { applyEncryption, init } from "database/app";
 import { hasAnyUserRegistered, addUser, getUser } from "database/userService";
 import { AppContext } from "contexts/App";
 import { AuthContext } from "contexts/Auth";
@@ -17,12 +18,16 @@ import { ROUTES, ROUTE_COMPONENTS, MENU_OPTIONS } from "shared/routes";
 
 import type { AddUser } from "typings/forms";
 
+const k = new Uint8Array([
+  1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27,
+  28, 29, 30, 31, 32
+]);
+
 export default function AppDefaultLayout() {
   const { loggedIn, login, setUserData } = useContext(AuthContext);
-  const { hideLoadingOverlay } = useContext(AppContext);
+  const { hideLoadingOverlay, showLoadingOverlay } = useContext(AppContext);
 
   const navigate = useNavigate();
-  const { pathname } = useLocation();
   const [firstMatch] = useMatches();
   const [userExists, setUserExists] = useState<keyof QueryStatus>(QUERY_STATUS.LOADING);
   const [path, setPath] = useState<string>(firstMatch?.pathname || "/");
@@ -75,12 +80,12 @@ export default function AppDefaultLayout() {
     login();
     setUserData(user);
 
-    navigate(pathname);
-    setPath(pathname);
+    applyEncryption(k);
+    init();
   };
 
   useEffect(() => {
-    // showLoadingOverlay();
+    showLoadingOverlay();
     checkUserStatus();
   }, []);
 
