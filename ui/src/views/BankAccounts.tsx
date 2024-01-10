@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Stack } from "@mui/material";
 import { Add as AddIcon, CloudSync as CloudSyncIcon } from "@mui/icons-material";
 
+import { v4 } from "uuid";
+import { addAccount } from "database/bankAccountService";
 import ButtonFit from "components/ButtonFit";
 import AddBankAccountDialogDialog from "components/AddBankAccountDialog";
 import BaseContainer from "components/BaseContainer";
@@ -13,7 +15,20 @@ export default function BankAccountsView() {
 
   const handleNewBankAccountCreation = async (data: AddBankAccountInput) => {
     await new Promise(resolve => setTimeout(resolve, 1000));
-    console.log(data);
+
+    const currDate = new Date();
+
+    await addAccount({
+      id: v4(),
+      type: "Savings",
+      number: data.accountNumber,
+      bankName: data.bankName,
+      holdersName: data.accountHoldersName,
+      createdAt: currDate,
+      updatedAt: currDate,
+      syncEnabled: data.syncWithCloud,
+      linkedCards: data.linkCards
+    });
   };
 
   return (
