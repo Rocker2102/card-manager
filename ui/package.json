@@ -15,7 +15,6 @@
     "@mui/material": "^5.11.12",
     "bcryptjs": "^2.4.3",
     "dexie": "^3.2.3",
-    "dexie-encrypted": "^2.0.0",
     "dexie-export-import": "^4.0.7",
     "dexie-react-hooks": "^1.1.1",
     "joi": "^17.9.2",
@@ -60,10 +59,21 @@
     "service-worker"
   ],
   "eslintConfig": {
-    "extends": ["react-app", "react-app/jest"]
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
   },
   "browserslist": {
-    "production": [">0.2%", "not dead", "not op_mini all"],
-    "development": ["last 1 chrome version", "last 1 firefox version", "last 1 safari version"]
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }

@@ -1,4 +1,4 @@
-export const DB_NAME = "pwa_card_manager";
+export const DB_NAME = "pwa_card_manager_data";
 export const DB_VERSION = 1;
 export const USER_DB_NAME = "pwa_card_manager_users";
 export const USER_DB_VERSION = 1;

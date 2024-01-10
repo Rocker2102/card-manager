@@ -1,5 +1,4 @@
 import Dexie, { Table } from "dexie";
-import { applyEncryptionMiddleware, ENCRYPT_LIST } from "dexie-encrypted";
 
 import { DB_NAME, DB_VERSION } from "shared/enum";
 
@@ -20,22 +19,5 @@ export class AppDatabase extends Dexie {
 }
 
 const db = new AppDatabase();
-
-const encryptionKey = new Uint8Array([1, 2, 3]);
-
-applyEncryptionMiddleware(
-  db,
-  encryptionKey,
-  {
-    cards: { type: ENCRYPT_LIST, fields: ["number", "cvv", "expiry"] },
-    bankAccounts: {
-      type: ENCRYPT_LIST,
-      fields: ["number", "ifsc", "balance", "mmid", "nomineesName"]
-    }
-  },
-  async (db: AppDatabase) => {
-    return db;
-  }
-);
 
 export default db;
