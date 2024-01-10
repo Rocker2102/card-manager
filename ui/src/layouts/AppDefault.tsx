@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { v4 } from "uuid";
 import { Routes, Route } from "react-router-dom";
-import { useMatches, useNavigate } from "react-router-dom";
+import { useMatches, useNavigate, useLocation } from "react-router-dom";
 import styled from "@emotion/styled";
 import { Box, Paper, BottomNavigation, BottomNavigationAction } from "@mui/material";
 
@@ -22,6 +22,7 @@ export default function AppDefaultLayout() {
   const { hideLoadingOverlay } = useContext(AppContext);
 
   const navigate = useNavigate();
+  const { pathname } = useLocation();
   const [firstMatch] = useMatches();
   const [userExists, setUserExists] = useState<keyof QueryStatus>(QUERY_STATUS.LOADING);
   const [path, setPath] = useState<string>(firstMatch?.pathname || "/");
@@ -39,9 +40,6 @@ export default function AppDefaultLayout() {
     if (!userExists) {
       return setUserExists(QUERY_STATUS.ERROR);
     }
-
-    const user = await getUser();
-    console.log(user);
 
     hideLoadingOverlay();
     setUserExists(QUERY_STATUS.SUCCESS);
@@ -77,9 +75,8 @@ export default function AppDefaultLayout() {
     login();
     setUserData(user);
 
-    const [firstRoute] = ROUTES;
-    navigate(`${AUTH_ROUTE_PREFIX}${firstRoute.path}`);
-    setPath(`${AUTH_ROUTE_PREFIX}${firstRoute.path}`);
+    navigate(pathname);
+    setPath(pathname);
   };
 
   useEffect(() => {
