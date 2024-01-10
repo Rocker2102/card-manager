@@ -2,13 +2,9 @@ import React, { useContext, useState } from "react";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import Grid from "@mui/material/Grid";
-import Select from "@mui/material/Select";
 import Checkbox from "@mui/material/Checkbox";
-import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import FormControlLabel from "@mui/material/FormControlLabel";
-import FormHelperText from "@mui/material/FormHelperText";
-import InputLabel from "@mui/material/InputLabel";
 import TextField from "@mui/material/TextField";
 import Divider from "@mui/material/Divider";
 import AppBar from "@mui/material/AppBar";
@@ -117,21 +113,12 @@ export default function AddBankAccountDialogDialog({
         <Grid container spacing={2} marginTop={2} sx={{ p: 2 }}>
           <Grid item xs={12} md={4}>
             <FormControl fullWidth>
-              <InputLabel id="bank-name">Bank Name *</InputLabel>
-              <Select
-                labelId="bank-name"
+              <TextField
                 label="Bank Name *"
                 inputProps={{ ...register("bankName") }}
-                defaultValue=""
                 error={Boolean(formState.errors.bankName)}
-              >
-                <MenuItem value="HDFC">HDFC</MenuItem>
-                <MenuItem value="ICICI">ICICI</MenuItem>
-                <MenuItem value="Yes Bank">Yes Bank</MenuItem>
-              </Select>
-              <FormHelperText error={Boolean(formState.errors.bankName)}>
-                {formState.errors.bankName?.message}
-              </FormHelperText>
+                helperText={formState.errors.bankName?.message}
+              />
             </FormControl>
           </Grid>
 
