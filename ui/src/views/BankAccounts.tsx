@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import List from "@mui/material/List";
 import Alert from "@mui/material/Alert";
 import Stack from "@mui/material/Stack";
 import Collapse from "@mui/material/Collapse";
@@ -100,15 +99,13 @@ export default function BankAccountsView() {
       )}
 
       {bankAccounts && bankAccounts.length > 0 && (
-        <List sx={{ width: "100%", mt: 2, bgcolor: "background.paper" }}>
-          <TransitionGroup>
-            {bankAccounts.map(account => (
-              <Collapse key={account.id}>
-                <BankAccountListItem account={account} />
-              </Collapse>
-            ))}
-          </TransitionGroup>
-        </List>
+        <TransitionGroup>
+          {bankAccounts.map(account => (
+            <Collapse key={account.id}>
+              <BankAccountListItem account={account} />
+            </Collapse>
+          ))}
+        </TransitionGroup>
       )}
     </BaseContainer>
   );
