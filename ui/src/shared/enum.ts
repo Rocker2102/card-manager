@@ -25,3 +25,9 @@ export const QUERY_STATUS: QueryStatus = {
 
 export const DB_KEY_LENGTH = 32;
 export const TOAST_AUTO_HIDE_DURATION = 3000;
+
+export const QUERY_KEYS = {
+  GET_CARDS: "cards",
+  GET_USERS: "users",
+  GET_BANK_ACCOUNTS: "bank-accounts"
+};
