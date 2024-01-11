@@ -2,6 +2,7 @@ import React, { useRef } from "react";
 import Snackbar from "components/Snackbar";
 
 import { TOAST_AUTO_HIDE_DURATION } from "shared/enum";
+
 import type { AlertProps } from "@mui/material";
 
 export default function useToast(defaultDuration = TOAST_AUTO_HIDE_DURATION) {

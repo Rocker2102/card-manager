@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { Alert, Stack } from "@mui/material";
+import Alert from "@mui/material/Alert";
+import Stack from "@mui/material/Stack";
 import { Add as AddIcon, CloudSync as CloudSyncIcon } from "@mui/icons-material";
 
 import { v4 } from "uuid";

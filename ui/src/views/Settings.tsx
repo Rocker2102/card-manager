@@ -1,6 +1,10 @@
 import React, { useState, useContext } from "react";
 import { styled } from "@mui/material/styles";
-import { Stack, Checkbox, Typography, FormControlLabel, ToggleButtonGroup } from "@mui/material";
+import Stack from "@mui/material/Stack";
+import Checkbox from "@mui/material/Checkbox";
+import Typography from "@mui/material/Typography";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import { DarkMode as DarkModeIcon, LightMode as LightModeIcon } from "@mui/icons-material";
 
 import { AppContext } from "contexts/App";

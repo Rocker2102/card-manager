@@ -3,7 +3,10 @@ import { v4 } from "uuid";
 import { Routes, Route } from "react-router-dom";
 import { useMatches, useNavigate } from "react-router-dom";
 import styled from "@emotion/styled";
-import { Box, Paper, BottomNavigation, BottomNavigationAction } from "@mui/material";
+import Box from "@mui/material/Box";
+import Paper from "@mui/material/Paper";
+import BottomNavigation from "@mui/material/BottomNavigation";
+import BottomNavigationAction from "@mui/material/BottomNavigationAction";
 
 import { hash, compare } from "helpers/bcrypt";
 import { decrypt, encrypt, generateKey } from "helpers/crypto";
