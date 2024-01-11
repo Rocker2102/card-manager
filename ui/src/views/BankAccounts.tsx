@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Stack } from "@mui/material";
+import React, { useState } from "react";
+import { Alert, Stack } from "@mui/material";
 import { Add as AddIcon, CloudSync as CloudSyncIcon } from "@mui/icons-material";
 
 import { v4 } from "uuid";
@@ -19,21 +19,6 @@ export default function BankAccountsView() {
     isLoading: bankAccountsLoading,
     isError: bankAccountsError
   } = useGetBankAccounts({ enabled: useDbReady() });
-
-  useEffect(() => {
-    if (bankAccountsError) {
-      console.error(bankAccountsError);
-    }
-
-    if (bankAccountsLoading) {
-      console.log("Loading bank accounts...");
-    }
-
-    if (bankAccounts) {
-      console.log("Bank accounts loaded successfully");
-      console.log(bankAccounts);
-    }
-  }, [bankAccounts, bankAccountsLoading, bankAccountsError]);
 
   const handleNewBankAccountCreation = async (data: AddBankAccountInput) => {
     const currDate = new Date();
@@ -59,24 +44,36 @@ export default function BankAccountsView() {
         handleSave={handleNewBankAccountCreation}
       />
 
-      <Stack spacing={1}>
-        <Stack spacing={1} direction="row" justifyContent="space-between">
-          <ButtonFit
-            buttonProps={{
-              variant: "outlined",
-              startIcon: <AddIcon />,
-              onClick: () => setIsOpen(true)
-            }}
-          >
-            New
-          </ButtonFit>
-          <ButtonFit
-            buttonProps={{ variant: "outlined", startIcon: <CloudSyncIcon />, disabled: true }}
-          >
-            Sync
-          </ButtonFit>
-        </Stack>
+      <Stack spacing={1} direction="row" mb={3} justifyContent="space-between">
+        <ButtonFit
+          buttonProps={{
+            variant: "outlined",
+            startIcon: <AddIcon />,
+            onClick: () => setIsOpen(true)
+          }}
+        >
+          New
+        </ButtonFit>
+        <ButtonFit
+          buttonProps={{ variant: "outlined", startIcon: <CloudSyncIcon />, disabled: true }}
+        >
+          Sync
+        </ButtonFit>
       </Stack>
+
+      {bankAccountsLoading && <Alert severity="info">Loading...</Alert>}
+
+      {!bankAccountsLoading && bankAccountsError && (
+        <Alert severity="error">There was a problem loading your accounts.</Alert>
+      )}
+
+      {bankAccounts && bankAccounts.length === 0 && (
+        <Alert severity="warning">No accounts to display</Alert>
+      )}
+
+      {bankAccounts && bankAccounts.length > 0 && (
+        <Alert severity="success">Yayy.. found your accounts</Alert>
+      )}
     </BaseContainer>
   );
 }
