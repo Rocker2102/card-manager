@@ -1,9 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import appDb from "database/app";
 
-import type { UseQueryOptions } from "@tanstack/react-query";
+import type { CustomQueryOptions } from "./types";
 
-export default function useGetBankAccounts(props?: Omit<UseQueryOptions, "queryKey" | "queryFn">) {
+export default function useGetBankAccounts(props?: CustomQueryOptions) {
   return useQuery({
     queryKey: ["bank-accounts"],
     queryFn: () => {
