@@ -145,6 +145,8 @@ const Layout = styled.div`
 
 const Content = styled(Box)`
   padding: 0 20px;
+  max-width: 100vw;
+  overflow-x: hidden;
 
   @media (max-width: 480px) {
     padding: 0 5px;
