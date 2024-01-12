@@ -14,6 +14,8 @@ import {
   ShareOutlined as ShareIcon,
   DeleteOutlined as DeleteIcon
 } from "@mui/icons-material";
+import { useTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 import ContentRow from "components/ContentRow";
 
@@ -47,11 +49,11 @@ function SecondaryText({ account, last4digits }: SecondaryTextProps) {
 function Actions() {
   return (
     <CardActions>
-      <IconButton aria-label="Edit account">
+      <IconButton color="primary" aria-label="Edit account">
         <EditIcon />
       </IconButton>
 
-      <IconButton aria-label="Share account details">
+      <IconButton color="warning" aria-label="Share account details">
         <ShareIcon />
       </IconButton>
 
@@ -63,11 +65,14 @@ function Actions() {
 }
 
 export default function BankAccountListItem({ account }: BankAccountListItemProps) {
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up("md"));
+
   const formattedAccountNumber = account.number.replace(/(\d{4})/g, "$1 ");
   const last4Digits = formattedAccountNumber.slice(-4);
 
   return (
-    <Card sx={{ borderRadius: 2 }}>
+    <Card sx={{ borderRadius: 2, mb: 3 }}>
       <CardHeader
         avatar={<Avatar>{account.bankName[0]}</Avatar>}
         title={
@@ -76,7 +81,7 @@ export default function BankAccountListItem({ account }: BankAccountListItemProp
           </Typography>
         }
         subheader={<SecondaryText account={account} last4digits={last4Digits} />}
-        // action={<Actions />}
+        action={matches ? <Actions /> : null}
         disableTypography
       />
 
@@ -95,7 +100,7 @@ export default function BankAccountListItem({ account }: BankAccountListItemProp
         </Accordion>
       </CardContent>
 
-      <Actions />
+      {!matches && <Actions />}
     </Card>
   );
 }
