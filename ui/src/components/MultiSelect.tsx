@@ -1,12 +1,16 @@
-import * as React from "react";
+import React from "react";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
-import FormControl, { FormControlProps } from "@mui/material/FormControl";
-import FormHelperText, { FormHelperTextProps } from "@mui/material/FormHelperText";
+import FormControl from "@mui/material/FormControl";
+import FormHelperText from "@mui/material/FormHelperText";
 import ListItemText from "@mui/material/ListItemText";
-import Select, { SelectChangeEvent, SelectProps } from "@mui/material/Select";
+import Select from "@mui/material/Select";
 import Checkbox from "@mui/material/Checkbox";
+
+import type { FormControlProps } from "@mui/material/FormControl";
+import type { FormHelperTextProps } from "@mui/material/FormHelperText";
+import type { SelectChangeEvent, SelectProps } from "@mui/material/Select";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;

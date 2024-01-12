@@ -12,6 +12,7 @@ import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import Slide from "@mui/material/Slide";
+import CloseIcon from "@mui/icons-material/Close";
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import { joiResolver } from "@hookform/resolvers/joi";
 
@@ -19,8 +20,6 @@ import { AppContext } from "contexts/App";
 import MultiSelect from "components/MultiSelect";
 import LoadingComponent from "components/LoadingComponent";
 import { addBankAccountSchema } from "shared/formSchemas";
-
-import CloseIcon from "@mui/icons-material/Close";
 
 import type { TransitionProps } from "@mui/material/transitions";
 import type { AddBankAccountInput } from "typings/forms";

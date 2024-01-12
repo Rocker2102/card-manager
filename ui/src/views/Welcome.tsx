@@ -5,9 +5,9 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
+import SupervisorAccountIcon from "@mui/icons-material/SupervisorAccount";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { joiResolver } from "@hookform/resolvers/joi";
-import SupervisorAccountIcon from "@mui/icons-material/SupervisorAccount";
 
 import { addUserSchema } from "shared/formSchemas";
 import PinInput from "components/PinInput";

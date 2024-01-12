@@ -1,5 +1,7 @@
 import React from "react";
-import Button, { ButtonProps } from "@mui/material/Button";
+import Button from "@mui/material/Button";
+
+import type { ButtonProps } from "@mui/material/Button";
 
 type ButtonFitProps = {
   children?: React.ReactNode;

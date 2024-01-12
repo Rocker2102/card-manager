@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { styled } from "@mui/material/styles";
+import styled from "@emotion/styled";
 import Stack from "@mui/material/Stack";
 import Checkbox from "@mui/material/Checkbox";
 import Typography from "@mui/material/Typography";
@@ -118,6 +118,6 @@ export default function SettingsView() {
   );
 }
 
-const StyledDiv = styled("div")`
+const StyledDiv = styled.div`
   text-align: left;
 `;
