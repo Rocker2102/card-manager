@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import Alert from "@mui/material/Alert";
 import Stack from "@mui/material/Stack";
 import Collapse from "@mui/material/Collapse";
@@ -10,7 +10,7 @@ import {
 } from "@mui/icons-material";
 
 import { v4 } from "uuid";
-import { addAccount } from "database/bankAccountService";
+import { addAccount, deleteAccount } from "database/bankAccountService";
 import useDbReady from "hooks/query/idb/useDbReady";
 import useGetBankAccounts from "hooks/query/idb/useGetBankAccounts";
 import ButtonFit from "components/ButtonFit";
@@ -18,10 +18,13 @@ import BankAccountListItem from "components/BankAccountListItem";
 import AddBankAccountDialogDialog from "components/AddBankAccountDialog";
 import BaseContainer from "components/BaseContainer";
 
+import type { BankAccount } from "database/types";
 import type { AddBankAccountInput } from "typings/forms";
+import DeleteConfirmationDialog from "components/DeleteConfirmationDialog";
 
 export default function BankAccountsView() {
   const [isOpen, setIsOpen] = useState(false);
+  const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false);
   const {
     data: bankAccounts,
     isLoading: bankAccountsLoading,
@@ -29,6 +32,7 @@ export default function BankAccountsView() {
     isError: bankAccountsError,
     refetch: refetchBankAccounts
   } = useGetBankAccounts({ enabled: useDbReady() });
+  const selectedAccountRef = useRef<BankAccount | null>(null);
 
   const handleNewBankAccountCreation = async (data: AddBankAccountInput) => {
     const currDate = new Date();
@@ -48,12 +52,26 @@ export default function BankAccountsView() {
     refetchBankAccounts();
   };
 
+  const handleBankAccountDeletion = async () => {
+    console.log("Deleting account: ", selectedAccountRef.current);
+    setDeleteConfirmationOpen(false);
+    // await deleteAccount(id);
+    // refetchBankAccounts();
+  };
+
   return (
     <BaseContainer pageTitle="Bank Accounts">
       <AddBankAccountDialogDialog
         isOpen={isOpen}
         handleClose={() => setIsOpen(false)}
         handleSave={handleNewBankAccountCreation}
+      />
+
+      <DeleteConfirmationDialog
+        open={deleteConfirmationOpen}
+        infoText="This action cannot be undone."
+        onClose={() => setDeleteConfirmationOpen(false)}
+        onConfirm={handleBankAccountDeletion}
       />
 
       <Stack spacing={1} direction="row" mb={3} justifyContent="space-between">
@@ -102,7 +120,15 @@ export default function BankAccountsView() {
         <TransitionGroup>
           {bankAccounts.map(account => (
             <Collapse key={account.id}>
-              <BankAccountListItem account={account} />
+              <BankAccountListItem
+                account={account}
+                editAccount={() => console.log("Edit account")}
+                shareAccount={() => console.log("Share account")}
+                deleteAccount={() => {
+                  selectedAccountRef.current = account;
+                  setDeleteConfirmationOpen(true);
+                }}
+              />
             </Collapse>
           ))}
         </TransitionGroup>

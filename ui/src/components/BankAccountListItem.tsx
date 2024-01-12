@@ -23,6 +23,9 @@ import type { BankAccount } from "database/types";
 
 type BankAccountListItemProps = {
   account: BankAccount;
+  editAccount: () => void;
+  shareAccount: () => void;
+  deleteAccount: () => void;
 };
 
 type SecondaryTextProps = {
@@ -46,25 +49,36 @@ function SecondaryText({ account, last4digits }: SecondaryTextProps) {
   );
 }
 
-function Actions() {
+type ActionsProps = {
+  edit: () => unknown;
+  share: () => unknown;
+  remove: () => unknown;
+};
+
+function Actions({ edit, share, remove }: ActionsProps) {
   return (
     <CardActions>
-      <IconButton color="primary" aria-label="Edit account">
+      <IconButton color="primary" aria-label="Edit account" onClick={edit}>
         <EditIcon />
       </IconButton>
 
-      <IconButton color="warning" aria-label="Share account details">
+      <IconButton color="warning" aria-label="Share account details" onClick={share}>
         <ShareIcon />
       </IconButton>
 
-      <IconButton color="error" aria-label="Remove account">
+      <IconButton color="error" aria-label="Remove account" onClick={remove}>
         <DeleteIcon />
       </IconButton>
     </CardActions>
   );
 }
 
-export default function BankAccountListItem({ account }: BankAccountListItemProps) {
+export default function BankAccountListItem({
+  account,
+  editAccount,
+  shareAccount,
+  deleteAccount
+}: BankAccountListItemProps) {
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.up("md"));
 
@@ -81,7 +95,11 @@ export default function BankAccountListItem({ account }: BankAccountListItemProp
           </Typography>
         }
         subheader={<SecondaryText account={account} last4digits={last4Digits} />}
-        action={matches ? <Actions /> : null}
+        action={
+          matches ? (
+            <Actions remove={deleteAccount} edit={editAccount} share={shareAccount} />
+          ) : null
+        }
         disableTypography
       />
 
@@ -100,7 +118,7 @@ export default function BankAccountListItem({ account }: BankAccountListItemProp
         </Accordion>
       </CardContent>
 
-      {!matches && <Actions />}
+      {!matches && <Actions remove={deleteAccount} edit={editAccount} share={shareAccount} />}
     </Card>
   );
 }
