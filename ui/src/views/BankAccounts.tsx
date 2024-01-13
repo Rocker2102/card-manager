@@ -53,10 +53,9 @@ export default function BankAccountsView() {
   };
 
   const handleBankAccountDeletion = async () => {
-    console.log("Deleting account: ", selectedAccountRef.current);
     setDeleteConfirmationOpen(false);
-    // await deleteAccount(id);
-    // refetchBankAccounts();
+    await deleteAccount((selectedAccountRef.current as BankAccount).id);
+    refetchBankAccounts();
   };
 
   return (
