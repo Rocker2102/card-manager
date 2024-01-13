@@ -31,3 +31,5 @@ export const QUERY_KEYS = {
   GET_USERS: "users",
   GET_BANK_ACCOUNTS: "bank-accounts"
 };
+
+export const BANK_ICONS_BASE_PATH = "assets/bank_icons/";
