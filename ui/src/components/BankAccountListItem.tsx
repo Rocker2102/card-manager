@@ -60,7 +60,7 @@ type ActionsProps = {
 
 function Actions({ edit, share, remove }: ActionsProps) {
   return (
-    <CardActions>
+    <CardActions sx={{ justifyContent: "end" }}>
       <IconButton color="primary" aria-label="Edit account" onClick={edit}>
         <EditIcon />
       </IconButton>
