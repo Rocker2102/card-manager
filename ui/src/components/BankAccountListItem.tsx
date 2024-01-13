@@ -18,8 +18,11 @@ import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 
 import ContentRow from "components/ContentRow";
+import getLogoSrc from "helpers/bankIconResolver";
 
 import type { BankAccount } from "database/types";
+
+const ACCOUNT_LOGO_SIZE = "64px";
 
 type BankAccountListItemProps = {
   account: BankAccount;
@@ -88,7 +91,15 @@ export default function BankAccountListItem({
   return (
     <Card sx={{ borderRadius: 2, mb: 3 }}>
       <CardHeader
-        avatar={<Avatar>{account.bankName[0]}</Avatar>}
+        avatar={
+          <Avatar
+            alt={account.bankName}
+            src={getLogoSrc(account.bankName)}
+            variant="rounded"
+            sx={{ height: ACCOUNT_LOGO_SIZE, width: ACCOUNT_LOGO_SIZE }}
+            imgProps={{ sx: { objectFit: "contain" } }}
+          />
+        }
         title={
           <Typography variant="h6" align="left">
             {account.bankName}
