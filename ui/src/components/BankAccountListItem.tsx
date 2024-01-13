@@ -62,7 +62,7 @@ function Actions({ edit, share, remove }: ActionsProps) {
         <EditIcon />
       </IconButton>
 
-      <IconButton color="warning" aria-label="Share account details" onClick={share}>
+      <IconButton color="warning" aria-label="Share account details" onClick={share} disabled>
         <ShareIcon />
       </IconButton>
 
