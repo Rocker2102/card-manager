@@ -44,7 +44,7 @@ const options = {
   "2": "SBI Cashback - XX 1216"
 };
 
-export default function AddBankAccountDialogDialog({
+export default function AddBankAccountDialog({
   isOpen,
   handleClose,
   handleSave

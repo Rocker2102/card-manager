@@ -85,6 +85,7 @@ function ExpandedInfo({ account }: ExpandedInfoProps) {
     <CardContent sx={{ py: 0 }}>
       <Button
         variant="text"
+        color="warning"
         onClick={() => setIsExpanded(!isExpanded)}
         sx={{ width: "100%" }}
         endIcon={
