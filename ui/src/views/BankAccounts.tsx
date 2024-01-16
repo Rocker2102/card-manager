@@ -46,7 +46,10 @@ export default function BankAccountsView() {
       createdAt: currDate,
       updatedAt: currDate,
       syncEnabled: data.syncWithCloud,
-      linkedCards: data.linkCards
+      linkedCards: data.linkCards,
+      mmid: data.mmid,
+      ifsc: data.ifscCode,
+      nomineesName: data.nomineesName
     });
 
     refetchBankAccounts();
