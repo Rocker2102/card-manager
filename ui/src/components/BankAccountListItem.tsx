@@ -133,7 +133,7 @@ export default function BankAccountListItem({
               />
             }
           >
-            More Info
+            {isExpanded ? "Hide" : "Show more"} info
           </Button>
 
           <Collapse in={isExpanded} timeout="auto" unmountOnExit>
