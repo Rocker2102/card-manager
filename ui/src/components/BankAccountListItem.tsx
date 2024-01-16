@@ -1,17 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 import Avatar from "@mui/material/Avatar";
+import Collapse from "@mui/material/Collapse";
 import IconButton from "@mui/material/IconButton";
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
 import CardContent from "@mui/material/CardContent";
 import CardActions from "@mui/material/CardActions";
-import Accordion from "@mui/material/Accordion";
 import Typography from "@mui/material/Typography";
-import AccordionDetails from "@mui/material/AccordionDetails";
-import AccordionSummary from "@mui/material/AccordionSummary";
 import {
   EditOutlined as EditIcon,
   ShareOutlined as ShareIcon,
+  ExpandMore as ExpandMoreIcon,
   DeleteOutlined as DeleteIcon
 } from "@mui/icons-material";
 import { useTheme } from "@mui/material/styles";
@@ -82,9 +83,12 @@ export default function BankAccountListItem({
   shareAccount,
   deleteAccount
 }: BankAccountListItemProps) {
+  const [isExpanded, setIsExpanded] = useState(false);
   const theme = useTheme();
-  const matches = useMediaQuery(theme.breakpoints.up("md"));
 
+  const matches = useMediaQuery(theme.breakpoints.up("md"));
+  const hasMoreInfo =
+    account.ifsc || account.mmid || account.nomineesName || (account?.linkedCards || []).length > 0;
   const formattedAccountNumber = account.number.replace(/(\d{4})/g, "$1 ");
   const last4Digits = formattedAccountNumber.slice(-4);
 
@@ -114,20 +118,53 @@ export default function BankAccountListItem({
         disableTypography
       />
 
-      <CardContent>
-        <Accordion>
-          <AccordionSummary
-            expandIcon={null}
-            aria-controls="show-more"
-            id={`accordian-${account.id}`}
+      {hasMoreInfo && (
+        <CardContent sx={{ py: 0 }}>
+          <Button
+            variant="text"
+            onClick={() => setIsExpanded(!isExpanded)}
+            sx={{ width: "100%" }}
+            endIcon={
+              <ExpandMoreIcon
+                sx={{
+                  transform: isExpanded ? "rotate(180deg)" : "rotate(0deg)",
+                  transition: "transform 0.3s ease"
+                }}
+              />
+            }
           >
-            <Typography justifyContent="center">Show More</Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <Typography>Show more account details here</Typography>
-          </AccordionDetails>
-        </Accordion>
-      </CardContent>
+            More Info
+          </Button>
+
+          <Collapse in={isExpanded} timeout="auto" unmountOnExit>
+            <Box sx={{ mt: 2 }}>
+              {account.ifsc && (
+                <ContentRow
+                  title="IFSC Code"
+                  value={account.ifsc}
+                  copyValue={account.ifsc}
+                  inline
+                />
+              )}
+
+              {account.mmid && (
+                <ContentRow title="MMID" value={account.mmid} copyValue={account.mmid} inline />
+              )}
+
+              {account.nomineesName && (
+                <ContentRow title="Nominee's Name" value={account.nomineesName} />
+              )}
+
+              {(account?.linkedCards || []).length > 0 && (
+                <ContentRow
+                  title="Number of cards linked to this bank account"
+                  value={"" + (account?.linkedCards as unknown as number[]).length}
+                />
+              )}
+            </Box>
+          </Collapse>
+        </CardContent>
+      )}
 
       {!matches && <Actions remove={deleteAccount} edit={editAccount} share={shareAccount} />}
     </Card>
