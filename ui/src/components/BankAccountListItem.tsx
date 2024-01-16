@@ -144,8 +144,6 @@ function BankAccountListItem({
   const formattedAccountNumber = account.number.replace(/(\d{4})/g, "$1 ");
   const last4Digits = formattedAccountNumber.slice(-4);
 
-  console.log("Re-rendering BankAccountListItem", account.id, account.bankName);
-
   return (
     <Card sx={{ borderRadius: 2, mb: 3 }}>
       <CardHeader
