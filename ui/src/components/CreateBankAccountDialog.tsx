@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import Grid from "@mui/material/Grid";
@@ -23,6 +23,7 @@ import { addBankAccountSchema } from "shared/formSchemas";
 
 import type { TransitionProps } from "@mui/material/transitions";
 import type { AddBankAccountInput } from "typings/forms";
+import type { BankAccount } from "database/types";
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -33,22 +34,29 @@ const Transition = React.forwardRef(function Transition(
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-type AddBankAccountDialogProps = {
+type CreateProps = {
   isOpen: boolean;
+  title: string;
   handleClose: () => void;
   handleSave: (data: AddBankAccountInput) => Promise<void>;
 };
+
+type EditProps = CreateProps & {
+  account: BankAccount;
+  isEditing: boolean;
+  handleUpdate: (data: AddBankAccountInput) => Promise<void>;
+};
+
+type CreateBankAccountDialogProps = CreateProps | EditProps;
 
 const options = {
   "1": "HDFC Millenia - XX 2726",
   "2": "SBI Cashback - XX 1216"
 };
 
-export default function AddBankAccountDialog({
-  isOpen,
-  handleClose,
-  handleSave
-}: AddBankAccountDialogProps) {
+export default function CreateBankAccountDialog(props: CreateBankAccountDialogProps) {
+  const { isOpen, handleClose, title, handleSave } = props;
+
   const { appSettings } = useContext(AppContext);
   const [saving, setSaving] = useState<boolean>(false);
 
@@ -69,7 +77,12 @@ export default function AddBankAccountDialog({
   const onSubmit: SubmitHandler<AddBankAccountInput> = async (data: AddBankAccountInput) => {
     try {
       setSaving(true);
-      await handleSave(data);
+
+      if ((props as EditProps).isEditing) {
+        await (props as EditProps).handleUpdate(data);
+      } else {
+        await handleSave(data);
+      }
 
       reset();
       setLinkedCards([]);
@@ -86,6 +99,28 @@ export default function AddBankAccountDialog({
     setValue("linkCards", arr);
   };
 
+  useEffect(() => {
+    if ((props as EditProps).isEditing) {
+      const editProps = props as EditProps;
+
+      if (editProps.account.linkedCards) {
+        setLinkedCards(editProps.account?.linkedCards);
+        setValue("linkCards", editProps.account?.linkedCards);
+      }
+
+      setValue("mmid", editProps.account?.mmid);
+      setValue("bankName", editProps.account?.bankName);
+      setValue("ifscCode", editProps.account?.ifsc);
+      setValue("accountNumber", editProps.account?.number);
+      setValue("syncWithCloud", editProps.account?.syncEnabled);
+      setValue("accountHoldersName", editProps.account?.holdersName);
+    } else {
+      reset();
+      setLinkedCards([]);
+      setValue("linkCards", []);
+    }
+  }, [(props as EditProps).isEditing]);
+
   return (
     <Dialog fullScreen open={isOpen} onClose={handleClose} TransitionComponent={Transition}>
       <AppBar sx={{ position: "relative" }}>
@@ -94,7 +129,7 @@ export default function AddBankAccountDialog({
             <CloseIcon />
           </IconButton>
           <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
-            Add new bank account
+            {title}
           </Typography>
 
           <LoadingComponent

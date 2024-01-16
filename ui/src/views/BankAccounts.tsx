@@ -10,19 +10,20 @@ import {
 } from "@mui/icons-material";
 
 import { v4 } from "uuid";
-import { addAccount, deleteAccount } from "database/bankAccountService";
+import { addAccount, deleteAccount, updateAccount } from "database/bankAccountService";
 import useDbReady from "hooks/query/idb/useDbReady";
 import useGetBankAccounts from "hooks/query/idb/useGetBankAccounts";
 import ButtonFit from "components/ButtonFit";
+import DeleteConfirmationDialog from "components/DeleteConfirmationDialog";
 import BankAccountListItem from "components/BankAccountListItem";
-import AddBankAccountDialogDialog from "components/AddBankAccountDialog";
+import CreateBankAccountDialog from "components/CreateBankAccountDialog";
 import BaseContainer from "components/BaseContainer";
 
 import type { BankAccount } from "database/types";
 import type { AddBankAccountInput } from "typings/forms";
-import DeleteConfirmationDialog from "components/DeleteConfirmationDialog";
 
 export default function BankAccountsView() {
+  const dbReady = useDbReady();
   const [isOpen, setIsOpen] = useState(false);
   const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false);
   const {
@@ -31,8 +32,12 @@ export default function BankAccountsView() {
     isFetching: bankAccountsFetching,
     isError: bankAccountsError,
     refetch: refetchBankAccounts
-  } = useGetBankAccounts({ enabled: useDbReady() });
+  } = useGetBankAccounts({ enabled: dbReady });
   const selectedAccountRef = useRef<BankAccount | null>(null);
+
+  const resetSelection = () => {
+    selectedAccountRef.current = null;
+  };
 
   const handleNewBankAccountCreation = async (data: AddBankAccountInput) => {
     const currDate = new Date();
@@ -55,14 +60,36 @@ export default function BankAccountsView() {
     refetchBankAccounts();
   };
 
+  const handleBankAccountUpdate = async (data: AddBankAccountInput) => {
+    const currDate = new Date();
+
+    await updateAccount({
+      id: (selectedAccountRef.current as BankAccount).id,
+      number: data.accountNumber,
+      bankName: data.bankName,
+      holdersName: data.accountHoldersName,
+      updatedAt: currDate,
+      syncEnabled: data.syncWithCloud,
+      linkedCards: data.linkCards,
+      mmid: data.mmid,
+      ifsc: data.ifscCode,
+      nomineesName: data.nomineesName
+    });
+
+    resetSelection();
+    await refetchBankAccounts();
+  };
+
   const handleBankAccountDeletion = async () => {
     setDeleteConfirmationOpen(false);
     await deleteAccount((selectedAccountRef.current as BankAccount).id);
     refetchBankAccounts();
+    resetSelection();
   };
 
   const processBankAccountEdit = (account: BankAccount) => {
-    console.log("Edit account", account);
+    selectedAccountRef.current = account;
+    setIsOpen(true);
   };
 
   const processBankAccountDeletion = (account: BankAccount) => {
@@ -72,9 +99,16 @@ export default function BankAccountsView() {
 
   return (
     <BaseContainer pageTitle="Bank Accounts">
-      <AddBankAccountDialogDialog
+      <CreateBankAccountDialog
         isOpen={isOpen}
-        handleClose={() => setIsOpen(false)}
+        handleClose={() => {
+          setIsOpen(false);
+          resetSelection();
+        }}
+        isEditing={!!selectedAccountRef.current}
+        title={`${selectedAccountRef.current ? "Edit" : "Create"} Bank Account`}
+        account={selectedAccountRef.current as BankAccount}
+        handleUpdate={handleBankAccountUpdate}
         handleSave={handleNewBankAccountCreation}
       />
 
