@@ -61,6 +61,15 @@ export default function BankAccountsView() {
     refetchBankAccounts();
   };
 
+  const processBankAccountEdit = (account: BankAccount) => {
+    console.log("Edit account", account);
+  };
+
+  const processBankAccountDeletion = (account: BankAccount) => {
+    selectedAccountRef.current = account;
+    setDeleteConfirmationOpen(true);
+  };
+
   return (
     <BaseContainer pageTitle="Bank Accounts">
       <AddBankAccountDialogDialog
@@ -124,12 +133,9 @@ export default function BankAccountsView() {
             <Collapse key={account.id}>
               <BankAccountListItem
                 account={account}
-                editAccount={() => console.log("Edit account")}
+                editAccount={processBankAccountEdit}
                 shareAccount={() => console.log("Share account")}
-                deleteAccount={() => {
-                  selectedAccountRef.current = account;
-                  setDeleteConfirmationOpen(true);
-                }}
+                deleteAccount={processBankAccountDeletion}
               />
             </Collapse>
           ))}

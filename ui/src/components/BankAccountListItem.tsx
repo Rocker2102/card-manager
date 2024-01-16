@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, memo } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Avatar from "@mui/material/Avatar";
@@ -24,13 +24,6 @@ import getLogoSrc from "helpers/bankIconResolver";
 import type { BankAccount } from "database/types";
 
 const ACCOUNT_LOGO_SIZE = "64px";
-
-type BankAccountListItemProps = {
-  account: BankAccount;
-  editAccount: () => void;
-  shareAccount: () => void;
-  deleteAccount: () => void;
-};
 
 type SecondaryTextProps = {
   account: BankAccount;
@@ -77,20 +70,81 @@ function Actions({ edit, share, remove }: ActionsProps) {
   );
 }
 
-export default function BankAccountListItem({
+type ExpandedInfoProps = {
+  account: BankAccount;
+};
+
+function ExpandedInfo({ account }: ExpandedInfoProps) {
+  const [isExpanded, setIsExpanded] = useState(false);
+  const hasMoreInfo =
+    account.ifsc || account.mmid || account.nomineesName || (account?.linkedCards || []).length > 0;
+
+  if (!hasMoreInfo) return null;
+
+  return (
+    <CardContent sx={{ py: 0 }}>
+      <Button
+        variant="text"
+        onClick={() => setIsExpanded(!isExpanded)}
+        sx={{ width: "100%" }}
+        endIcon={
+          <ExpandMoreIcon
+            sx={{
+              transform: isExpanded ? "rotate(180deg)" : "rotate(0deg)",
+              transition: "transform 0.3s ease"
+            }}
+          />
+        }
+      >
+        {isExpanded ? "Hide" : "Show more"} info
+      </Button>
+
+      <Collapse in={isExpanded} timeout="auto" unmountOnExit>
+        <Box sx={{ mt: 2 }}>
+          {account.ifsc && (
+            <ContentRow title="IFSC Code" value={account.ifsc} copyValue={account.ifsc} inline />
+          )}
+
+          {account.mmid && (
+            <ContentRow title="MMID" value={account.mmid} copyValue={account.mmid} inline />
+          )}
+
+          {account.nomineesName && (
+            <ContentRow title="Nominee's Name" value={account.nomineesName} />
+          )}
+
+          {(account?.linkedCards || []).length > 0 && (
+            <ContentRow
+              title="Number of cards linked to this bank account"
+              value={"" + (account?.linkedCards as unknown as number[]).length}
+            />
+          )}
+        </Box>
+      </Collapse>
+    </CardContent>
+  );
+}
+
+type BankAccountListItemProps = {
+  account: BankAccount;
+  editAccount: (account: BankAccount) => void;
+  shareAccount: () => void;
+  deleteAccount: (account: BankAccount) => void;
+};
+
+function BankAccountListItem({
   account,
   editAccount,
   shareAccount,
   deleteAccount
 }: BankAccountListItemProps) {
-  const [isExpanded, setIsExpanded] = useState(false);
   const theme = useTheme();
 
   const matches = useMediaQuery(theme.breakpoints.up("md"));
-  const hasMoreInfo =
-    account.ifsc || account.mmid || account.nomineesName || (account?.linkedCards || []).length > 0;
   const formattedAccountNumber = account.number.replace(/(\d{4})/g, "$1 ");
   const last4Digits = formattedAccountNumber.slice(-4);
+
+  console.log("Re-rendering BankAccountListItem", account.id, account.bankName);
 
   return (
     <Card sx={{ borderRadius: 2, mb: 3 }}>
@@ -112,61 +166,31 @@ export default function BankAccountListItem({
         subheader={<SecondaryText account={account} last4digits={last4Digits} />}
         action={
           matches ? (
-            <Actions remove={deleteAccount} edit={editAccount} share={shareAccount} />
+            <Actions
+              remove={() => deleteAccount(account)}
+              edit={() => editAccount(account)}
+              share={shareAccount}
+            />
           ) : null
         }
         disableTypography
       />
 
-      {hasMoreInfo && (
-        <CardContent sx={{ py: 0 }}>
-          <Button
-            variant="text"
-            onClick={() => setIsExpanded(!isExpanded)}
-            sx={{ width: "100%" }}
-            endIcon={
-              <ExpandMoreIcon
-                sx={{
-                  transform: isExpanded ? "rotate(180deg)" : "rotate(0deg)",
-                  transition: "transform 0.3s ease"
-                }}
-              />
-            }
-          >
-            {isExpanded ? "Hide" : "Show more"} info
-          </Button>
+      <ExpandedInfo account={account} />
 
-          <Collapse in={isExpanded} timeout="auto" unmountOnExit>
-            <Box sx={{ mt: 2 }}>
-              {account.ifsc && (
-                <ContentRow
-                  title="IFSC Code"
-                  value={account.ifsc}
-                  copyValue={account.ifsc}
-                  inline
-                />
-              )}
-
-              {account.mmid && (
-                <ContentRow title="MMID" value={account.mmid} copyValue={account.mmid} inline />
-              )}
-
-              {account.nomineesName && (
-                <ContentRow title="Nominee's Name" value={account.nomineesName} />
-              )}
-
-              {(account?.linkedCards || []).length > 0 && (
-                <ContentRow
-                  title="Number of cards linked to this bank account"
-                  value={"" + (account?.linkedCards as unknown as number[]).length}
-                />
-              )}
-            </Box>
-          </Collapse>
-        </CardContent>
+      {!matches && (
+        <Actions
+          remove={() => deleteAccount(account)}
+          edit={() => editAccount(account)}
+          share={shareAccount}
+        />
       )}
-
-      {!matches && <Actions remove={deleteAccount} edit={editAccount} share={shareAccount} />}
     </Card>
   );
 }
+
+export default memo(BankAccountListItem, (prev, next) =>
+  Object.keys(prev).every(
+    k => prev.account[k as keyof BankAccount] === next.account[k as keyof BankAccount]
+  )
+);
