@@ -188,8 +188,8 @@ function BankAccountListItem({
   );
 }
 
-export default memo(BankAccountListItem, (prev, next) =>
-  Object.keys(prev).every(
+export default memo(BankAccountListItem, (prev, next) => {
+  return Object.keys(prev.account).every(
     k => prev.account[k as keyof BankAccount] === next.account[k as keyof BankAccount]
-  )
-);
+  );
+});
