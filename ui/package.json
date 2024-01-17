@@ -1,6 +1,6 @@
 {
-  "name": "card-manager",
-  "version": "0.1.0",
+  "name": "finance-hub",
+  "version": "0.2.0",
   "private": true,
   "repository": {
     "type": "git",
@@ -60,21 +60,10 @@
     "service-worker"
   ],
   "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+    "extends": ["react-app", "react-app/jest"]
   },
   "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+    "production": [">0.2%", "not dead", "not op_mini all"],
+    "development": ["last 1 chrome version", "last 1 firefox version", "last 1 safari version"]
   }
 }
