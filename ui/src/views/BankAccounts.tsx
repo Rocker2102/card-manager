@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useContext } from "react";
 import Alert from "@mui/material/Alert";
 import Stack from "@mui/material/Stack";
 import Collapse from "@mui/material/Collapse";
@@ -10,6 +10,7 @@ import {
 } from "@mui/icons-material";
 
 import { v4 } from "uuid";
+import { AppContext } from "contexts/App";
 import { addAccount, deleteAccount, updateAccount } from "database/bankAccountService";
 import useDbReady from "hooks/query/idb/useDbReady";
 import useGetBankAccounts from "hooks/query/idb/useGetBankAccounts";
@@ -23,6 +24,7 @@ import type { BankAccount } from "database/types";
 import type { AddBankAccountInput } from "typings/forms";
 
 export default function BankAccountsView() {
+  const { showToast } = useContext(AppContext);
   const dbReady = useDbReady();
   const [isOpen, setIsOpen] = useState(false);
   const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false);
@@ -58,6 +60,8 @@ export default function BankAccountsView() {
     });
 
     refetchBankAccounts();
+
+    showToast("Bank account added successfully", "success");
   };
 
   const handleBankAccountUpdate = async (data: AddBankAccountInput) => {
@@ -78,6 +82,8 @@ export default function BankAccountsView() {
 
     resetSelection();
     await refetchBankAccounts();
+
+    showToast("Bank account updated", "info");
   };
 
   const handleBankAccountDeletion = async () => {
@@ -85,6 +91,8 @@ export default function BankAccountsView() {
     await deleteAccount((selectedAccountRef.current as BankAccount).id);
     refetchBankAccounts();
     resetSelection();
+
+    showToast("Bank account deleted", "error");
   };
 
   const processBankAccountEdit = (account: BankAccount) => {
