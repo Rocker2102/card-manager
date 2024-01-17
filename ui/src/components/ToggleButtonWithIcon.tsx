@@ -1,5 +1,6 @@
 import React from "react";
-import { ToggleButton as MuiToggleButton, Typography } from "@mui/material";
+import Typography from "@mui/material/Typography";
+import MuiToggleButton from "@mui/material/ToggleButton";
 
 import type { ToggleButtonProps as MuiToggleButtonProps } from "@mui/material";
 

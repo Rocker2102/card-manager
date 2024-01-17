@@ -1,6 +1,6 @@
 import React, { createContext, useState, useCallback } from "react";
-import useToast from "hooks/useToast";
 
+import useToast from "hooks/useToast";
 import APP_THEME from "shared/theme";
 import { getAppSettings } from "shared/helpers";
 import LoadingOverlay from "components/LoadingOverlay";

@@ -19,8 +19,8 @@ export const addUser = async (user: User) => {
   return await userDb.users.add(user);
 };
 
-export const updateUser = async (user: User) => {
-  return await userDb.users.put(user);
+export const updateUser = async (user: Partial<User> & Pick<User, "id">) => {
+  return await userDb.users.update(user.id, user);
 };
 
 export const deleteUser = async (id: string) => {

@@ -1,28 +1,32 @@
 import React, { useContext, useEffect, useState } from "react";
 import { v4 } from "uuid";
 import { Routes, Route } from "react-router-dom";
-import { useMatches, useNavigate, useLocation } from "react-router-dom";
+import { useMatches, useNavigate } from "react-router-dom";
 import styled from "@emotion/styled";
-import { Box, Paper, BottomNavigation, BottomNavigationAction } from "@mui/material";
+import Box from "@mui/material/Box";
+import Paper from "@mui/material/Paper";
+import BottomNavigation from "@mui/material/BottomNavigation";
+import BottomNavigationAction from "@mui/material/BottomNavigationAction";
 
 import { hash, compare } from "helpers/bcrypt";
+import { decrypt, encrypt, generateKey } from "helpers/crypto";
+import { applyEncryption, init } from "database/app";
 import { hasAnyUserRegistered, addUser, getUser } from "database/userService";
 import { AppContext } from "contexts/App";
 import { AuthContext } from "contexts/Auth";
 import LoginView from "views/Login";
 import ErrorView from "views/Error";
 import WelcomeView from "views/Welcome";
-import { AUTH_ROUTE_PREFIX, QUERY_STATUS } from "shared/enum";
+import { AUTH_ROUTE_PREFIX, DB_KEY_LENGTH, QUERY_STATUS } from "shared/enum";
 import { ROUTES, ROUTE_COMPONENTS, MENU_OPTIONS } from "shared/routes";
 
 import type { AddUser } from "typings/forms";
 
 export default function AppDefaultLayout() {
   const { loggedIn, login, setUserData } = useContext(AuthContext);
-  const { hideLoadingOverlay } = useContext(AppContext);
+  const { hideLoadingOverlay, showLoadingOverlay } = useContext(AppContext);
 
   const navigate = useNavigate();
-  const { pathname } = useLocation();
   const [firstMatch] = useMatches();
   const [userExists, setUserExists] = useState<keyof QueryStatus>(QUERY_STATUS.LOADING);
   const [path, setPath] = useState<string>(firstMatch?.pathname || "/");
@@ -36,12 +40,12 @@ export default function AppDefaultLayout() {
 
   const checkUserStatus = async () => {
     const userExists = await hasAnyUserRegistered();
+    hideLoadingOverlay();
 
     if (!userExists) {
       return setUserExists(QUERY_STATUS.ERROR);
     }
 
-    hideLoadingOverlay();
     setUserExists(QUERY_STATUS.SUCCESS);
   };
 
@@ -53,12 +57,17 @@ export default function AppDefaultLayout() {
     }
 
     const currDate = new Date();
+
+    const randomKey = crypto.getRandomValues(new Uint8Array(DB_KEY_LENGTH));
+    const encryptedKey = await encrypt(randomKey, await generateKey(data.password));
+
     await addUser({
       ...data,
       id: v4(),
       password: await hash(data.password),
       createdAt: currDate,
-      updatedAt: currDate
+      updatedAt: currDate,
+      permanentUserSecret: encryptedKey
     });
 
     setTimeout(() => window.location.reload(), 500);
@@ -75,12 +84,13 @@ export default function AppDefaultLayout() {
     login();
     setUserData(user);
 
-    navigate(pathname);
-    setPath(pathname);
+    const decryptedKey = await decrypt(user.permanentUserSecret, await generateKey(pin));
+    applyEncryption(new Uint8Array(decryptedKey));
+    init();
   };
 
   useEffect(() => {
-    // showLoadingOverlay();
+    showLoadingOverlay();
     checkUserStatus();
   }, []);
 
@@ -135,6 +145,8 @@ const Layout = styled.div`
 
 const Content = styled(Box)`
   padding: 0 20px;
+  max-width: 100vw;
+  overflow-x: hidden;
 
   @media (max-width: 480px) {
     padding: 0 5px;

@@ -14,8 +14,10 @@ export const addAccount = async (bankAccount: BankAccount) => {
   return await appDb.bankAccounts.add(bankAccount);
 };
 
-export const updateAccount = async (bankAccount: BankAccount) => {
-  return await appDb.bankAccounts.put(bankAccount);
+export const updateAccount = async (
+  bankAccount: Partial<BankAccount> & Pick<BankAccount, "id">
+) => {
+  return await appDb.bankAccounts.update(bankAccount.id, bankAccount);
 };
 
 export const deleteAccount = async (id: string) => {

@@ -54,4 +54,5 @@ export interface User extends Timestamps {
   photoURL?: string;
   mobileNumber?: string;
   password: string;
+  permanentUserSecret: ArrayBuffer; // encrypted by password
 }
