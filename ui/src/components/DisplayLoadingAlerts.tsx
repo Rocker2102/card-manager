@@ -37,7 +37,7 @@ export default function DisplayLoadingAlerts({
   }
 
   if (!loading && typeof dataLength === "number" && dataLength === 0) {
-    return <Alert severity="info">{normalizedMessages.noData}</Alert>;
+    return <Alert severity="warning">{normalizedMessages.noData}</Alert>;
   }
 
   return null;
