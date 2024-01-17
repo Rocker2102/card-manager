@@ -141,9 +141,9 @@ function BankAccountListItem({
 }: BankAccountListItemProps) {
   const theme = useTheme();
 
-  const matches = useMediaQuery(theme.breakpoints.up("md"));
-  const formattedAccountNumber = account.number.replace(/(\d{4})/g, "$1 ");
-  const last4Digits = formattedAccountNumber.slice(-4);
+  const isScreenAboveMd = useMediaQuery(theme.breakpoints.up("md"));
+  // const formattedAccountNumber = account.number.replace(/(\d{4})/g, "$1 ");
+  const last4Digits = account.number.slice(-4);
 
   return (
     <Card sx={{ borderRadius: 2, mb: 3 }}>
@@ -164,7 +164,7 @@ function BankAccountListItem({
         }
         subheader={<SecondaryText account={account} last4digits={last4Digits} />}
         action={
-          matches ? (
+          isScreenAboveMd ? (
             <Actions
               remove={() => deleteAccount(account)}
               edit={() => editAccount(account)}
@@ -177,7 +177,7 @@ function BankAccountListItem({
 
       <ExpandedInfo account={account} />
 
-      {!matches && (
+      {!isScreenAboveMd && (
         <Actions
           remove={() => deleteAccount(account)}
           edit={() => editAccount(account)}
