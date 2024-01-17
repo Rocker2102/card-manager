@@ -21,7 +21,6 @@
     "dexie-react-hooks": "^1.1.1",
     "joi": "^17.9.2",
     "react": "^18.2.0",
-    "react-credit-cards-2": "^1.0.1",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.45.2",
     "react-router-dom": "^6.8.2",
