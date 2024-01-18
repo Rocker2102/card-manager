@@ -1,6 +1,6 @@
 import React from "react";
 import {
-  CreditCard as CreditCardIcon,
+  StyleOutlined as CreditCardIcon,
   SettingsOutlined as SettingsIcon,
   AccountBalanceOutlined as AccountBalanceIcon
 } from "@mui/icons-material";
