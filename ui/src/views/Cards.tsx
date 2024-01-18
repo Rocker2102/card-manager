@@ -11,6 +11,7 @@ import { AppContext } from "contexts/App";
 // import { addCard, deleteCard, updateCard } from "database/cardService";
 import useDbReady from "hooks/query/idb/useDbReady";
 import useGetCards from "hooks/query/idb/useGetCards";
+import CreditCard from "components/CreditCard";
 import BaseContainer from "components/BaseContainer";
 import DeleteConfirmationDialog from "components/DeleteConfirmationDialog";
 import ButtonFit from "components/ButtonFit";
@@ -84,6 +85,12 @@ export default function CardsView() {
           noData: "No cards to display. Add a new card to view it here."
         }}
       />
+
+      <div style={{ display: "flex" }}>
+        <CreditCard number="4657813469542645" name="Ankush Yadav" cvv="852" expiry="12/28" />
+        <CreditCard number="4657813469542645" name="Ankush Yadav" cvv="852" expiry="12/28" />
+        <CreditCard number="340256488625643" name="Ankush Yadav" cvv="9764" expiry="12/25" />
+      </div>
     </BaseContainer>
   );
 }
