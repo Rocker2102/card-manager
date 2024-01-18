@@ -33,7 +33,7 @@ type MenuOptions = {
 
 export const ROUTES: Route[] = [
   {
-    path: "/",
+    path: "/cards",
     key: "cards"
   },
   {
@@ -54,7 +54,7 @@ export const ROUTE_COMPONENTS: RouteComponents = {
 
 // Order of the routes in the menu
 export const MENU_OPTIONS: MenuOptions = {
-  "/": {
+  "/cards": {
     icon: <CreditCardIcon />,
     label: "Cards"
   },
