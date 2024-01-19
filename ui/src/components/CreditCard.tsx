@@ -79,7 +79,7 @@ const CreditCardContainer = styled.div`
   * {
     box-sizing: border-box;
     font-family: "cc font", monospace;
-    font-color: #fff;
+    color: #fff;
     text-transform: uppercase;
   }
 
@@ -161,8 +161,6 @@ const CreditCardNumber = styled.div`
 `;
 
 const CreditCardExpiry = styled.div`
-  text-transform: uppercase;
-
   grid-column: 1 / span 1;
   grid-row: 5 / span 1;
 `;
@@ -170,6 +168,9 @@ const CreditCardExpiry = styled.div`
 const CreditCardHoldersName = styled.div`
   font-size: 22px;
   font-weight: 300;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 
   grid-column: 1 / span 1;
   grid-row: 6 / span 1;
