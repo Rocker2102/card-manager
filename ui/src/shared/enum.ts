@@ -33,3 +33,23 @@ export const QUERY_KEYS = {
 };
 
 export const BANK_ICONS_BASE_PATH = "assets/bank_icons/";
+
+export const CARD_TYPES = ["debit", "credit", "prepaid"];
+
+export const MONTHS = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December"
+];
+
+export const CARD_MIN_VALID_YEAR = new Date().getFullYear();
+export const CARD_MAX_VALID_YEAR = CARD_MIN_VALID_YEAR + 20;
