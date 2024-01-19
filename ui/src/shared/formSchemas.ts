@@ -72,11 +72,18 @@ export const addCreditCardSchema = Joi.object({
   holdersName: Joi.string().trim().required().min(3).messages(getMessagesObj("Card holder's name")),
   cardNetwork: Joi.string().required().messages(getMessagesObj("Network")),
   cardType: Joi.string().required().messages(getMessagesObj("Card type")),
-  expiry: Joi.string()
-    .trim()
+  expiryMonth: Joi.number()
+    .integer()
+    .min(1)
+    .max(12)
     .required()
-    .pattern(/^(0[1-9]|1[0-2])\/([0-9]{4}|[0-9]{2})$/)
-    .messages(getMessagesObj("Expiry date")),
+    .messages(getMessagesObj("Expiry month")),
+  expiryYear: Joi.number()
+    .integer()
+    .min(2020)
+    .max(2100)
+    .required()
+    .messages(getMessagesObj("Expiry year")),
   cvv: Joi.string()
     .trim()
     .required()
