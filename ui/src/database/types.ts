@@ -24,6 +24,7 @@ export interface Card extends Timestamps, Syncable {
     | "Maestro"
     | null;
   type: "debit" | "credit" | "prepaid";
+  contactless: boolean;
   category?: string; // different according to banks
   number: string;
   holdersName: string;

@@ -89,5 +89,6 @@ export const addCreditCardSchema = Joi.object({
     .required()
     .pattern(/^[0-9]{3,4}$/)
     .messages(getMessagesObj("CVV")),
+  contactless: Joi.boolean().required(),
   syncWithCloud: Joi.boolean().required().messages(getMessagesObj("Sync with cloud"))
 });

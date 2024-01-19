@@ -17,7 +17,12 @@ import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import Slide from "@mui/material/Slide";
-import { Close as CloseIcon, Visibility, VisibilityOff } from "@mui/icons-material";
+import {
+  Close as CloseIcon,
+  Visibility,
+  VisibilityOff,
+  ContactlessOutlined as Contactless
+} from "@mui/icons-material";
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import { joiResolver } from "@hookform/resolvers/joi";
 
@@ -70,12 +75,13 @@ export default function CreateCardDialog(props: CreateCardDialogProps) {
   const [saving, setSaving] = useState<boolean>(false);
   const [showCvv, setShowCvv] = useState<boolean>(false);
 
-  const { control, formState, handleSubmit, watch, setValue, register, reset } =
+  const { control, formState, handleSubmit, watch, setValue, register, getValues, reset } =
     useForm<AddCardInput>({
       mode: "onSubmit",
       resolver: joiResolver(addCreditCardSchema),
       defaultValues: {
         cardType: DEFAULT_CARD_TYPE,
+        contactless: true,
         syncWithCloud: false
       }
     });
@@ -111,6 +117,7 @@ export default function CreateCardDialog(props: CreateCardDialogProps) {
       setValue("cvv", editProps.card.cvv);
       setValue("expiryMonth", editProps.card.expiry.month);
       setValue("expiryYear", editProps.card.expiry.year);
+      setValue("contactless", editProps.card.contactless);
       setValue("syncWithCloud", editProps.card.syncEnabled);
     } else {
       reset();
@@ -292,12 +299,38 @@ export default function CreateCardDialog(props: CreateCardDialogProps) {
             </Grid>
           </Grid>
 
+          <Grid item xs={12}>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  onChange={() => setValue("contactless", !getValues("contactless"))}
+                  checked={watch("contactless")}
+                />
+              }
+              label="Supports contactless payments"
+            />
+            <Typography
+              variant="caption"
+              display="block"
+              color={watch("contactless") ? "success.main" : "warning.main"}
+            >
+              {watch("contactless") ? "Supports" : "Does not support"} tap & pay.
+              <br />
+              Check your card for a WiFi (
+              <IconButton size="small">
+                <Contactless fontSize="inherit" />
+              </IconButton>
+              ) like icon at the front side.
+            </Typography>
+          </Grid>
+
           <Grid item xs={12} mt={1} display="flex" justifyContent="flex-start">
             <CreditCard
               type={watch("cardType")}
               number={watch("cardNumber")}
               name={watch("holdersName")}
               cvv={watch("cvv")}
+              contactless={watch("contactless")}
               expiry={
                 prependZero(watch("expiryMonth", 0) || 0) +
                 "/" +
@@ -314,8 +347,6 @@ export default function CreateCardDialog(props: CreateCardDialogProps) {
         </Typography>
 
         <Grid container spacing={2} sx={{ p: 2 }}>
-          <Grid item xs={12} md={4}></Grid>
-
           <Grid item xs={12}>
             <FormControlLabel
               control={

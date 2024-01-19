@@ -15,11 +15,19 @@ type CreditCardProps = {
   expiry: string;
   name: string;
   cvv: string;
+  contactless?: boolean;
   issuer?: string;
   bankName?: string;
 };
 
-export default function CreditCard({ type, number, expiry, name, cvv }: CreditCardProps) {
+export default function CreditCard({
+  type,
+  number,
+  expiry,
+  name,
+  contactless = true,
+  cvv
+}: CreditCardProps) {
   const cardType = useMemo(() => {
     const types = creditCardType(number);
     return types.length ? types[0] : null;
@@ -37,7 +45,7 @@ export default function CreditCard({ type, number, expiry, name, cvv }: CreditCa
           <CreditCardChipContainer />
           {type && <CardType>{type}</CardType>}
           {isAmex && <AmexCvv>{cvv}</AmexCvv>}
-          <CreditCardContactlessIcon />
+          {contactless && <CreditCardContactlessIcon />}
           <CreditCardNumber>{prettyNumber}</CreditCardNumber>
           <CreditCardExpiry>Valid Thru: {expiry}</CreditCardExpiry>
           <CreditCardHoldersName>{name}</CreditCardHoldersName>

@@ -19,6 +19,7 @@ export type AddCardInput = {
   cvv: string;
   expiryMonth: number;
   expiryYear: number;
+  contactless: boolean;
   syncWithCloud: boolean;
 };
 
