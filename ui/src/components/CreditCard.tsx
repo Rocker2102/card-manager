@@ -10,6 +10,7 @@ const CARD_BACK_SIGNATURE_PATH = "/assets/card_stripe.png";
 const CONTACTLESS_ICON_PATH = "/assets/contactless.svg";
 
 type CreditCardProps = {
+  type?: string;
   number: string;
   expiry: string;
   name: string;
@@ -18,7 +19,7 @@ type CreditCardProps = {
   bankName?: string;
 };
 
-export default function CreditCard({ number, expiry, name, cvv }: CreditCardProps) {
+export default function CreditCard({ type, number, expiry, name, cvv }: CreditCardProps) {
   const cardType = useMemo(() => {
     const types = creditCardType(number);
     return types.length ? types[0] : null;
@@ -34,6 +35,7 @@ export default function CreditCard({ number, expiry, name, cvv }: CreditCardProp
         <CreditCardFront>
           <CardBgImg src={CARD_BG_MG_PATH} />
           <CreditCardChipContainer />
+          {type && <CardType>{type}</CardType>}
           {isAmex && <AmexCvv>{cvv}</AmexCvv>}
           <CreditCardContactlessIcon />
           <CreditCardNumber>{prettyNumber}</CreditCardNumber>
@@ -72,6 +74,7 @@ const CreditCardContainer = styled.div`
   perspective: 1000px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
   box-sizing: border-box;
+  text-align: left;
 
   * {
     box-sizing: border-box;
@@ -134,14 +137,14 @@ const CreditCardBack = styled(CreditCardSide)`
 `;
 
 const CreditCardChipContainer = styled.div`
-  grid-column: 1 / 2;
-  grid-row: 1 / span 2;
-
   background-image: url(${CARD_CHIP_ICON_PATH});
   background-size: contain;
   background-repeat: no-repeat;
   z-index: 1;
   overflow: hidden;
+
+  grid-column: 1 / 2;
+  grid-row: 1 / span 2;
 `;
 
 const CreditCardNumber = styled.div`
@@ -151,6 +154,7 @@ const CreditCardNumber = styled.div`
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
+  letter-spacing: 1.5px;
 
   grid-column: 1 / span 2;
   grid-row: 4 / span 1;
@@ -171,10 +175,35 @@ const CreditCardHoldersName = styled.div`
   grid-row: 6 / span 1;
 `;
 
+const CardType = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  top: -10px;
+  right: -10px;
+  font-size: 14px;
+  text-overflow: clip;
+  white-space: nowrap;
+  letter-spacing: 1.5px;
+  overflow: hidden;
+  border: 1px solid #fff;
+  border-radius: 4px;
+
+  @media (max-width: 480px) {
+    top: -7px;
+    right: -7px;
+  }
+
+  grid-column: 2 / span 1;
+  grid-row: 1 / span 1;
+`;
+
 const AmexCvv = styled.div`
   font-size: 14px;
   font-style: italic;
   text-align: right;
+
   grid-column: 2 / span 1;
   grid-row: 2 / span 1;
 `;
@@ -186,6 +215,7 @@ const CreditCardContactlessIcon = styled.div`
   background-position: right;
   width: 100%;
   height: 100%;
+
   grid-column: 2 / span 1;
   grid-row: 3 / span 1;
 `;
@@ -198,6 +228,7 @@ const CreditCardStripe = styled.div`
   width: 100%;
   height: 100%;
   background-color: #000;
+
   grid-column: 1 / span 2;
   grid-row: 2 / span 1;
 `;
@@ -215,9 +246,10 @@ const IssuerLogo = styled.div<IssuerLogoProps>`
 `;
 
 const CreditCardSignaturePatternContainer = styled.div`
+  padding-left: 30px;
+
   grid-column: 1 / span 1;
   grid-row: 4 / span 1;
-  padding-left: 30px;
 `;
 
 const CreditCardSignaturePattern = styled.div`
@@ -229,9 +261,10 @@ const CreditCardSignaturePattern = styled.div`
 `;
 
 const CreditCardCvvContainer = styled.div`
+  padding-right: 30px;
+
   grid-column: 2 / span 1;
   grid-row: 4 / span 1;
-  padding-right: 30px;
 `;
 
 const CreditCardCvv = styled.div`
@@ -240,7 +273,7 @@ const CreditCardCvv = styled.div`
   height: 100%;
   color: #000;
 
-  font-size: 18px;
+  font-size: 16px;
   font-style: italic;
   text-align: center;
 `;
