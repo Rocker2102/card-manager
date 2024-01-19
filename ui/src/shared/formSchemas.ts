@@ -75,7 +75,7 @@ export const addCreditCardSchema = Joi.object({
   expiry: Joi.string()
     .trim()
     .required()
-    .pattern(/^(0[1-9]|1[0-2])\/?([0-9]{4}|[0-9]{2})$/)
+    .pattern(/^(0[1-9]|1[0-2])\/([0-9]{4}|[0-9]{2})$/)
     .messages(getMessagesObj("Expiry date")),
   cvv: Joi.string()
     .trim()
