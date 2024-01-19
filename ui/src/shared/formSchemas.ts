@@ -62,3 +62,25 @@ export const addUserSchema = Joi.object({
     .messages(getMessagesObj("Mobile number")),
   password: Joi.string().trim().required().min(4).messages(getMessagesObj("Password"))
 });
+
+export const addCreditCardSchema = Joi.object({
+  cardNumber: Joi.string()
+    .trim()
+    .pattern(/^[0-9]{15,16}$/)
+    .required()
+    .messages(getMessagesObj("Card number")),
+  holdersName: Joi.string().trim().required().min(3).messages(getMessagesObj("Card holder's name")),
+  cardNetwork: Joi.string().required().messages(getMessagesObj("Network")),
+  cardType: Joi.string().required().messages(getMessagesObj("Card type")),
+  expiry: Joi.string()
+    .trim()
+    .required()
+    .pattern(/^(0[1-9]|1[0-2])\/?([0-9]{4}|[0-9]{2})$/)
+    .messages(getMessagesObj("Expiry date")),
+  cvv: Joi.string()
+    .trim()
+    .required()
+    .pattern(/^[0-9]{3,4}$/)
+    .messages(getMessagesObj("CVV")),
+  syncWithCloud: Joi.boolean().required().messages(getMessagesObj("Sync with cloud"))
+});

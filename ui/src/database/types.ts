@@ -25,12 +25,10 @@ export interface Card extends Timestamps, Syncable {
     | null;
   type: "debit" | "credit" | "prepaid";
   category?: string; // different according to banks
-  number?: string;
-  lastFourDigits: string;
-  addedAt: string;
-  name: string;
-  cvv?: string;
-  expiry?: MonthYear;
+  number: string;
+  holdersName: string;
+  cvv: string;
+  expiry: MonthYear;
 }
 
 export interface BankAccount extends Timestamps, Syncable {
