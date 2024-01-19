@@ -105,7 +105,16 @@ const CreditCardSide = styled.div`
   overflow: hidden;
   z-index: 1;
   backface-visibility: hidden;
+`;
 
+const CreditCardFront = styled(CreditCardSide)`
+  background-image: linear-gradient(-45deg, green, blue);
+  display: grid;
+  grid-template-rows: repeat(6, 1fr);
+  grid-template-columns: 3fr 1fr;
+  grid-row-gap: 2px;
+
+  padding: 20px 30px;
   @media (max-width: 768px) {
     padding: 20px;
   }
@@ -113,15 +122,6 @@ const CreditCardSide = styled.div`
   @media (max-width: 480px) {
     padding: 15px;
   }
-`;
-
-const CreditCardFront = styled(CreditCardSide)`
-  background-image: linear-gradient(-45deg, green, blue);
-  padding: 20px 30px;
-  display: grid;
-  grid-template-rows: repeat(6, 1fr);
-  grid-template-columns: 3fr 1fr;
-  grid-row-gap: 2px;
 `;
 
 const CreditCardBack = styled(CreditCardSide)`
