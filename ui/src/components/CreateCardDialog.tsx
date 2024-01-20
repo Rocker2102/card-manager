@@ -111,13 +111,14 @@ export default function CreateCardDialog(props: CreateCardDialogProps) {
     if ((props as EditProps).isEditing) {
       const editProps = props as EditProps;
 
+      setValue("cvv", editProps.card.cvv);
       setValue("cardType", editProps.card.type);
       setValue("cardNumber", editProps.card.number);
-      setValue("holdersName", editProps.card.holdersName);
-      setValue("cvv", editProps.card.cvv);
-      setValue("expiryMonth", editProps.card.expiry.month);
+      setValue("cardNetwork", editProps.card.network);
       setValue("expiryYear", editProps.card.expiry.year);
       setValue("contactless", editProps.card.contactless);
+      setValue("holdersName", editProps.card.holdersName);
+      setValue("expiryMonth", editProps.card.expiry.month);
       setValue("syncWithCloud", editProps.card.syncEnabled);
     } else {
       reset();
@@ -238,7 +239,7 @@ export default function CreateCardDialog(props: CreateCardDialogProps) {
                   endAdornment: (
                     <InputAdornment position="end">
                       <IconButton
-                        aria-label="toggle password visibility"
+                        aria-label="toggle cvv visibility"
                         onClick={handleClickShowCvv}
                         onMouseDown={handleMouseDownCvv}
                         edge="end"
@@ -256,7 +257,7 @@ export default function CreateCardDialog(props: CreateCardDialogProps) {
           <Grid item xs={12} md={6} display="flex" justifyContent="space-between">
             <Grid item xs={5}>
               <FormControl fullWidth error={!!formState.errors.expiryYear}>
-                <InputLabel id="card-type-label">Expiry Month *</InputLabel>
+                <InputLabel id="card-expiry-month-label">Expiry Month *</InputLabel>
                 <Select
                   labelId="card-expiry-month-label"
                   id="card-expiry-month"
@@ -280,7 +281,7 @@ export default function CreateCardDialog(props: CreateCardDialogProps) {
 
             <Grid item xs={5}>
               <FormControl fullWidth error={!!formState.errors.expiryYear}>
-                <InputLabel id="card-type-label">Expiry Year *</InputLabel>
+                <InputLabel id="card-expiry-year-label">Expiry Year *</InputLabel>
                 <Select
                   labelId="card-expiry-year-label"
                   id="card-expiry-year"
