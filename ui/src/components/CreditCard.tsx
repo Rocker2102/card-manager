@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import styled from "@emotion/styled";
-import creditCardType from "credit-card-type";
+import creditCardType, { types as CardTypes } from "credit-card-type";
 
 import prettyCardNumber from "helpers/prettyCardNumber";
 
@@ -33,7 +33,7 @@ export default function CreditCard({
     return types.length ? types[0] : null;
   }, [number]);
 
-  const isAmex = cardType?.type === "american-express";
+  const isAmex = cardType?.type === CardTypes.AMERICAN_EXPRESS;
 
   const prettyNumber = cardType ? prettyCardNumber(number.replaceAll(" ", ""), cardType) : number;
 
@@ -49,7 +49,7 @@ export default function CreditCard({
           <CreditCardNumber>{prettyNumber}</CreditCardNumber>
           <CreditCardExpiry>Valid Thru: {expiry}</CreditCardExpiry>
           <CreditCardHoldersName>{name}</CreditCardHoldersName>
-          <IssuerLogo logo="/assets/network_icons/maestro.svg" />
+          {cardType && <IssuerLogo logo={`/assets/network_icons/${cardType.type}.svg`} />}
         </CreditCardFront>
 
         <CreditCardBack>
@@ -60,7 +60,7 @@ export default function CreditCard({
           <CreditCardCvvContainer>
             <CreditCardCvv>{isAmex ? "XXX" : cvv}</CreditCardCvv>
           </CreditCardCvvContainer>
-          <IssuerLogo logo="/assets/network_icons/amex.svg" />
+          {cardType && <IssuerLogo logo={`/assets/network_icons/${cardType.type}.svg`} />}
         </CreditCardBack>
       </CreditCardInner>
     </CreditCardContainer>
@@ -249,6 +249,7 @@ const IssuerLogo = styled.div<IssuerLogoProps>`
   background-size: contain;
   background-repeat: no-repeat;
   background-position: right;
+  transition: all 0.2s ease-in-out;
 
   grid-column: 2 / span 1;
   grid-row: 5 / span 2;
