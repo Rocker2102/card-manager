@@ -3,6 +3,7 @@ import Joi from "joi";
 const getMessagesObj = (fieldName = "Field") => {
   return {
     "any.required": `${fieldName} is required`,
+    "number.base": `${fieldName} must be a number`,
     "string.base": `${fieldName} must be a string`,
     "string.empty": `${fieldName} cannot be blank`,
     "string.pattern.base": `${fieldName} is invalid`,
