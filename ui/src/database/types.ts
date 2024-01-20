@@ -1,3 +1,5 @@
+import type { CreditCardTypeCardBrandId } from "credit-card-type/dist/types";
+
 type MonthYear = {
   month: number;
   year: number;
@@ -15,14 +17,7 @@ type Syncable = {
 
 export interface Card extends Timestamps, Syncable {
   id: string;
-  network:
-    | "American Express"
-    | "Diners Club"
-    | "Discover"
-    | "Mastercard"
-    | "Visa"
-    | "Maestro"
-    | null;
+  network: CreditCardTypeCardBrandId | null;
   type: "debit" | "credit" | "prepaid";
   contactless: boolean;
   category?: string; // different according to banks
