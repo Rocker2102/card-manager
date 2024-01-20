@@ -32,6 +32,7 @@ import LoadingComponent from "components/LoadingComponent";
 import { addCreditCardSchema } from "shared/formSchemas";
 import capitalize from "helpers/capitalize";
 import prependZero from "helpers/prependZero";
+import CARD_NETWORKS from "helpers/cardNetworks";
 import { CARD_MIN_VALID_YEAR, CARD_MAX_VALID_YEAR, CARD_TYPES, MONTHS } from "shared/enum";
 
 import type { TransitionProps } from "@mui/material/transitions";
@@ -208,7 +209,7 @@ export default function CreateCardDialog(props: CreateCardDialogProps) {
             </FormControl>
           </Grid>
 
-          <Grid item xs={6} md={3}>
+          <Grid item xs={6} md={5}>
             <FormControl fullWidth error={!!formState.errors.cardType}>
               <InputLabel id="card-type-label">Card Type *</InputLabel>
               <Select
@@ -228,7 +229,7 @@ export default function CreateCardDialog(props: CreateCardDialogProps) {
             </FormControl>
           </Grid>
 
-          <Grid item xs={6} md={3}>
+          <Grid item xs={6} md={2}>
             <FormControl variant="outlined" fullWidth>
               <TextField
                 label="CVV *"
@@ -251,6 +252,30 @@ export default function CreateCardDialog(props: CreateCardDialogProps) {
                 }}
                 inputProps={{ maxLength: "4", ...register("cvv") }}
               />
+            </FormControl>
+          </Grid>
+
+          <Grid item xs={12} md={5}>
+            <FormControl fullWidth error={!!formState.errors.cardNetwork}>
+              <InputLabel id="card-type-label">Card Network *</InputLabel>
+              <Select
+                labelId="card-network-label"
+                id="card-network"
+                label="Card Network *"
+                inputProps={{ ...register("cardNetwork") }}
+                value={watch("cardNetwork") || ""}
+              >
+                <MenuItem value="">Not Selected</MenuItem>
+                {CARD_NETWORKS.map(({ id, label }, index) => (
+                  <MenuItem key={index} value={id}>
+                    {label}
+                  </MenuItem>
+                ))}
+              </Select>
+              <FormHelperText>
+                {formState.errors.cardNetwork?.message ||
+                  "Recommended to select manually only if not detected automatically"}
+              </FormHelperText>
             </FormControl>
           </Grid>
 
