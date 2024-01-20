@@ -19,9 +19,9 @@ import Typography from "@mui/material/Typography";
 import Slide from "@mui/material/Slide";
 import {
   Close as CloseIcon,
-  Visibility,
-  VisibilityOff,
-  ContactlessOutlined as Contactless
+  Visibility as VisibilityIcon,
+  VisibilityOff as VisibilityOffIcon,
+  ContactlessOutlined as ContactlessIcon
 } from "@mui/icons-material";
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import { joiResolver } from "@hookform/resolvers/joi";
@@ -244,7 +244,7 @@ export default function CreateCardDialog(props: CreateCardDialogProps) {
                         onMouseDown={handleMouseDownCvv}
                         edge="end"
                       >
-                        {showCvv ? <VisibilityOff /> : <Visibility />}
+                        {showCvv ? <VisibilityOffIcon /> : <VisibilityIcon />}
                       </IconButton>
                     </InputAdornment>
                   )
@@ -319,7 +319,7 @@ export default function CreateCardDialog(props: CreateCardDialogProps) {
               <br />
               Check your card for a WiFi (
               <IconButton size="small">
-                <Contactless fontSize="inherit" />
+                <ContactlessIcon fontSize="inherit" />
               </IconButton>
               ) like icon at the front side.
             </Typography>
