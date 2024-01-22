@@ -18,6 +18,7 @@ type CreditCardProps = {
   contactless?: boolean;
   issuer?: string;
   bankName?: string;
+  flipped?: boolean;
 };
 
 export default function CreditCard({
@@ -26,20 +27,23 @@ export default function CreditCard({
   expiry,
   name,
   contactless = true,
-  cvv
+  cvv,
+  flipped = false
 }: CreditCardProps) {
-  const cardType = useMemo(() => {
+  const { cardType, prettyNumber } = useMemo(() => {
     const types = creditCardType(number);
-    return types.length ? types[0] : null;
+    const type = types.length ? types[0] : null;
+
+    return type
+      ? { cardType: type, prettyNumber: prettyCardNumber(number.replaceAll(" ", ""), type) }
+      : { cardType: null, prettyNumber: number };
   }, [number]);
 
   const isAmex = cardType?.type === CardTypes.AMERICAN_EXPRESS;
 
-  const prettyNumber = cardType ? prettyCardNumber(number.replaceAll(" ", ""), cardType) : number;
-
   return (
     <CreditCardContainer>
-      <CreditCardInner>
+      <CreditCardInner flipped={flipped}>
         <CreditCardFront>
           <CardBgImg src={CARD_BG_MG_PATH} />
           <CreditCardChipContainer />
@@ -67,12 +71,18 @@ export default function CreditCard({
   );
 }
 
-const CreditCardInner = styled.div`
+type CreditCardInnerProps = {
+  flipped: boolean;
+};
+
+const CreditCardInner = styled.div<CreditCardInnerProps>`
   width: 100%;
   height: 100%;
   position: relative;
   transition: transform 0.75s;
   transform-style: preserve-3d;
+
+  transform: ${props => (props.flipped ? "rotateX(180deg)" : "rotateX(0deg)")};
 `;
 
 const CreditCardContainer = styled.div`
@@ -89,10 +99,6 @@ const CreditCardContainer = styled.div`
     font-family: "cc font", monospace;
     color: #fff;
     text-transform: uppercase;
-  }
-
-  &:hover ${CreditCardInner} {
-    transform: rotateX(180deg);
   }
 `;
 
