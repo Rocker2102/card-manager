@@ -29,6 +29,7 @@ export default function CreditCard({
   name,
   contactless = true,
   cvv,
+  issuer,
   flipped = false,
   showCvv = false
 }: CreditCardProps) {
@@ -55,7 +56,7 @@ export default function CreditCard({
           <CreditCardNumber>{prettyNumber}</CreditCardNumber>
           <CreditCardExpiry>Valid Thru: {expiry}</CreditCardExpiry>
           <CreditCardHoldersName>{name}</CreditCardHoldersName>
-          {cardType && <IssuerLogo logo={`/assets/network_icons/${cardType.type}.svg`} />}
+          {cardType && <IssuerLogo logo={`/assets/network_icons/${issuer || cardType.type}.svg`} />}
         </CreditCardFront>
 
         <CreditCardBack>
@@ -66,7 +67,7 @@ export default function CreditCard({
           <CreditCardCvvContainer>
             <CreditCardCvv>{isAmex ? "XXX" : showCvv ? cvv : "XXX"}</CreditCardCvv>
           </CreditCardCvvContainer>
-          {cardType && <IssuerLogo logo={`/assets/network_icons/${cardType.type}.svg`} />}
+          {cardType && <IssuerLogo logo={`/assets/network_icons/${issuer || cardType.type}.svg`} />}
         </CreditCardBack>
       </CreditCardInner>
     </CreditCardContainer>
