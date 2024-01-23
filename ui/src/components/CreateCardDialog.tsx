@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useMemo } from "react";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import Grid from "@mui/material/Grid";
@@ -25,6 +25,7 @@ import {
 } from "@mui/icons-material";
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import { joiResolver } from "@hookform/resolvers/joi";
+import creditCardType, { types as CardTypes } from "credit-card-type";
 
 import { AppContext } from "contexts/App";
 import CreditCard from "./CreditCard";
@@ -38,6 +39,7 @@ import { CARD_MIN_VALID_YEAR, CARD_MAX_VALID_YEAR, CARD_TYPES, MONTHS } from "sh
 import type { TransitionProps } from "@mui/material/transitions";
 import type { AddCardInput } from "typings/forms";
 import type { Card } from "database/types";
+import type { CreditCardTypeCardBrandId } from "credit-card-type/dist/types";
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -75,6 +77,7 @@ export default function CreateCardDialog(props: CreateCardDialogProps) {
   const { appSettings } = useContext(AppContext);
   const [saving, setSaving] = useState<boolean>(false);
   const [showCvv, setShowCvv] = useState<boolean>(false);
+  const [cvvFieldFocussed, setCvvFieldFocussed] = useState<boolean>(false);
 
   const { control, formState, handleSubmit, watch, setValue, register, getValues, reset } =
     useForm<AddCardInput>({
@@ -87,6 +90,18 @@ export default function CreateCardDialog(props: CreateCardDialogProps) {
         syncWithCloud: false
       }
     });
+
+  const cardType = useMemo(() => {
+    const types = creditCardType(getValues("cardNumber"));
+
+    if (types.length) {
+      setValue("cardNetwork", types[0].type as CreditCardTypeCardBrandId);
+      return types[0];
+    }
+
+    // explicit type cast to CreditCardTypeCardBrandId
+    setValue("cardNetwork", "" as CreditCardTypeCardBrandId);
+  }, [watch("cardNumber")]);
 
   const [settings] = appSettings;
 
@@ -251,7 +266,13 @@ export default function CreateCardDialog(props: CreateCardDialogProps) {
                     </InputAdornment>
                   )
                 }}
-                inputProps={{ maxLength: "4", ...register("cvv") }}
+                inputProps={{
+                  maxLength: "4",
+                  onFocus: () => setCvvFieldFocussed(true),
+                  ...register("cvv", {
+                    onBlur: () => setCvvFieldFocussed(false)
+                  })
+                }}
               />
             </FormControl>
           </Grid>
@@ -363,7 +384,11 @@ export default function CreateCardDialog(props: CreateCardDialogProps) {
                 "/" +
                 prependZero(watch("expiryYear", 0) || 0).slice(-2)
               }
-              flipped={false}
+              issuer={watch("cardNetwork") as string}
+              flipped={
+                cardType && cardType.type === CardTypes.AMERICAN_EXPRESS ? false : cvvFieldFocussed
+              }
+              showCvv={showCvv}
             />
           </Grid>
         </Grid>
