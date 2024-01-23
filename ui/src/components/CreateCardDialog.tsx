@@ -81,6 +81,7 @@ export default function CreateCardDialog(props: CreateCardDialogProps) {
       mode: "onSubmit",
       resolver: joiResolver(addCreditCardSchema),
       defaultValues: {
+        cardNumber: "",
         cardType: DEFAULT_CARD_TYPE,
         contactless: true,
         syncWithCloud: false
@@ -362,6 +363,7 @@ export default function CreateCardDialog(props: CreateCardDialogProps) {
                 "/" +
                 prependZero(watch("expiryYear", 0) || 0).slice(-2)
               }
+              flipped={false}
             />
           </Grid>
         </Grid>
