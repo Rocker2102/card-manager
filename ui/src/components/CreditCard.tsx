@@ -19,6 +19,7 @@ type CreditCardProps = {
   issuer?: string;
   bankName?: string;
   flipped?: boolean;
+  showCvv?: boolean;
 };
 
 export default function CreditCard({
@@ -28,7 +29,8 @@ export default function CreditCard({
   name,
   contactless = true,
   cvv,
-  flipped = false
+  flipped = false,
+  showCvv = false
 }: CreditCardProps) {
   const { cardType, prettyNumber } = useMemo(() => {
     const types = creditCardType(number);
@@ -48,7 +50,7 @@ export default function CreditCard({
           <CardBgImg src={CARD_BG_MG_PATH} />
           <CreditCardChipContainer />
           {type && <CardType>{type}</CardType>}
-          {isAmex && <AmexCvv>{cvv}</AmexCvv>}
+          {isAmex && <AmexCvv>{showCvv ? cvv : "XXXX"}</AmexCvv>}
           {contactless && <CreditCardContactlessIcon />}
           <CreditCardNumber>{prettyNumber}</CreditCardNumber>
           <CreditCardExpiry>Valid Thru: {expiry}</CreditCardExpiry>
@@ -62,7 +64,7 @@ export default function CreditCard({
             <CreditCardSignaturePattern />
           </CreditCardSignaturePatternContainer>
           <CreditCardCvvContainer>
-            <CreditCardCvv>{isAmex ? "XXX" : cvv}</CreditCardCvv>
+            <CreditCardCvv>{isAmex ? "XXX" : showCvv ? cvv : "XXX"}</CreditCardCvv>
           </CreditCardCvvContainer>
           {cardType && <IssuerLogo logo={`/assets/network_icons/${cardType.type}.svg`} />}
         </CreditCardBack>
