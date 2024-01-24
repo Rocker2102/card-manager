@@ -1,26 +1,34 @@
-import React from "react";
-import logo from "./logo.svg";
-import "./App.css";
+import React, { useContext } from "react";
+import { ThemeProvider } from "@mui/system";
+import { RouterProvider } from "react-router-dom";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import CssBaseline from "@mui/material/CssBaseline";
 
-function App() {
+import APP_ROUTER from "shared/router";
+import { AppContext } from "contexts/App";
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: Infinity,
+      retry: false,
+      refetchOnMount: false,
+      refetchOnWindowFocus: false
+    }
+  }
+});
+
+export default function App() {
+  const { appTheme } = useContext(AppContext);
+  const [theme] = appTheme;
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+
+      <QueryClientProvider client={queryClient}>
+        <RouterProvider router={APP_ROUTER} />
+      </QueryClientProvider>
+    </ThemeProvider>
   );
 }
-
-export default App;
