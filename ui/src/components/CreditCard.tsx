@@ -52,7 +52,7 @@ export default function CreditCard({
           <CreditCardChipContainer />
           {type && <CardType>{type}</CardType>}
           {isAmex && <AmexCvv>{showCvv ? cvv : "XXXX"}</AmexCvv>}
-          {contactless && <CreditCardContactlessIcon />}
+          <CreditCardContactlessIcon show={contactless} />
           <CreditCardNumber>{prettyNumber}</CreditCardNumber>
           <CreditCardExpiry>Valid Thru: {expiry}</CreditCardExpiry>
           <CreditCardHoldersName>{name}</CreditCardHoldersName>
@@ -226,13 +226,20 @@ const AmexCvv = styled.div`
   grid-row: 2 / span 1;
 `;
 
-const CreditCardContactlessIcon = styled.div`
+type CreditCardContactlessIconProps = {
+  show: boolean;
+};
+
+const CreditCardContactlessIcon = styled.div<CreditCardContactlessIconProps>`
   background-image: url(${CONTACTLESS_ICON_PATH});
   background-size: contain;
   background-repeat: no-repeat;
   background-position: right;
   width: 100%;
   height: 100%;
+  transition: all 0.2s ease-in-out;
+  opacity: ${props => +props.show};
+  transform: translateY(${props => (props.show ? "0" : "50%")});
 
   grid-column: 2 / span 1;
   grid-row: 3 / span 1;
