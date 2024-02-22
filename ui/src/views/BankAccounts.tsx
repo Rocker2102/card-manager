@@ -1,5 +1,4 @@
 import React, { useState, useRef, useContext } from "react";
-import Alert from "@mui/material/Alert";
 import Stack from "@mui/material/Stack";
 import Collapse from "@mui/material/Collapse";
 import TransitionGroup from "react-transition-group/TransitionGroup";
@@ -15,6 +14,7 @@ import { addAccount, deleteAccount, updateAccount } from "database/bankAccountSe
 import useDbReady from "hooks/query/idb/useDbReady";
 import useGetBankAccounts from "hooks/query/idb/useGetBankAccounts";
 import ButtonFit from "components/ButtonFit";
+import DisplayLoadingAlerts from "components/DisplayLoadingAlerts";
 import DeleteConfirmationDialog from "components/DeleteConfirmationDialog";
 import BankAccountListItem from "components/BankAccountListItem";
 import CreateBankAccountDialog from "components/CreateBankAccountDialog";
@@ -159,15 +159,16 @@ export default function BankAccountsView() {
         </Stack>
       </Stack>
 
-      {bankAccountsFetching && <Alert severity="info">Loading...</Alert>}
-
-      {!bankAccountsLoading && bankAccountsError && (
-        <Alert severity="error">There was a problem loading your accounts.</Alert>
-      )}
-
-      {bankAccounts && bankAccounts.length === 0 && (
-        <Alert severity="warning">No accounts to display. Add a new account to view it here.</Alert>
-      )}
+      <DisplayLoadingAlerts
+        error={bankAccountsError}
+        loading={bankAccountsLoading}
+        fetching={bankAccountsFetching}
+        dataLength={bankAccounts?.length}
+        messages={{
+          error: "There was a problem loading your accounts.",
+          noData: "No accounts to display. Add a new account to view it here."
+        }}
+      />
 
       {bankAccounts && bankAccounts.length > 0 && (
         <TransitionGroup>

@@ -3,6 +3,7 @@ import Joi from "joi";
 const getMessagesObj = (fieldName = "Field") => {
   return {
     "any.required": `${fieldName} is required`,
+    "number.base": `${fieldName} must be a number`,
     "string.base": `${fieldName} must be a string`,
     "string.empty": `${fieldName} cannot be blank`,
     "string.pattern.base": `${fieldName} is invalid`,
@@ -61,4 +62,34 @@ export const addUserSchema = Joi.object({
     .pattern(/^[0-9]{10}$/)
     .messages(getMessagesObj("Mobile number")),
   password: Joi.string().trim().required().min(4).messages(getMessagesObj("Password"))
+});
+
+export const addCreditCardSchema = Joi.object({
+  cardNumber: Joi.string()
+    .trim()
+    .pattern(/^[0-9]{15,16}$/)
+    .required()
+    .messages(getMessagesObj("Card number")),
+  holdersName: Joi.string().trim().required().min(3).messages(getMessagesObj("Card holder's name")),
+  cardNetwork: Joi.string().required().messages(getMessagesObj("Network")),
+  cardType: Joi.string().required().messages(getMessagesObj("Card type")),
+  expiryMonth: Joi.number()
+    .integer()
+    .min(1)
+    .max(12)
+    .required()
+    .messages(getMessagesObj("Expiry month")),
+  expiryYear: Joi.number()
+    .integer()
+    .min(2020)
+    .max(2100)
+    .required()
+    .messages(getMessagesObj("Expiry year")),
+  cvv: Joi.string()
+    .trim()
+    .required()
+    .pattern(/^[0-9]{3,4}$/)
+    .messages(getMessagesObj("CVV")),
+  contactless: Joi.boolean().required(),
+  syncWithCloud: Joi.boolean().required().messages(getMessagesObj("Sync with cloud"))
 });
