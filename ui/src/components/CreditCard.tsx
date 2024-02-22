@@ -10,7 +10,7 @@ const CARD_BACK_SIGNATURE_PATH = "/assets/card_stripe.png";
 const CONTACTLESS_ICON_PATH = "/assets/contactless.svg";
 
 type CreditCardProps = {
-  type?: string;
+  type?: "credit" | "debit" | "prepaid";
   number: string;
   expiry: string;
   name: string;
