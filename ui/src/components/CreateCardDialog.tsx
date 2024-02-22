@@ -79,17 +79,26 @@ export default function CreateCardDialog(props: CreateCardDialogProps) {
   const [showCvv, setShowCvv] = useState<boolean>(false);
   const [cvvFieldFocussed, setCvvFieldFocussed] = useState<boolean>(false);
 
-  const { control, formState, handleSubmit, watch, setValue, register, getValues, reset } =
-    useForm<AddCardInput>({
-      mode: "onSubmit",
-      resolver: joiResolver(addCreditCardSchema),
-      defaultValues: {
-        cardNumber: "",
-        cardType: DEFAULT_CARD_TYPE,
-        contactless: true,
-        syncWithCloud: false
-      }
-    });
+  const {
+    control,
+    formState,
+    handleSubmit,
+    watch,
+    setValue,
+    register,
+    getValues,
+    reset,
+    clearErrors
+  } = useForm<AddCardInput>({
+    mode: "onSubmit",
+    resolver: joiResolver(addCreditCardSchema),
+    defaultValues: {
+      cardNumber: "",
+      cardType: DEFAULT_CARD_TYPE,
+      contactless: true,
+      syncWithCloud: false
+    }
+  });
 
   const cardType = useMemo(() => {
     const types = creditCardType(getValues("cardNumber"));
@@ -128,6 +137,7 @@ export default function CreateCardDialog(props: CreateCardDialogProps) {
     if ((props as EditProps).isEditing) {
       const editProps = props as EditProps;
 
+      clearErrors();
       setValue("cvv", editProps.card.cvv);
       setValue("cardType", editProps.card.type);
       setValue("cardNumber", editProps.card.number);

@@ -60,7 +60,7 @@ export default function CreateBankAccountDialog(props: CreateBankAccountDialogPr
   const { appSettings } = useContext(AppContext);
   const [saving, setSaving] = useState<boolean>(false);
 
-  const { control, formState, handleSubmit, setValue, register, reset } =
+  const { control, formState, handleSubmit, setValue, register, reset, clearErrors } =
     useForm<AddBankAccountInput>({
       mode: "onSubmit",
       resolver: joiResolver(addBankAccountSchema),
@@ -108,6 +108,7 @@ export default function CreateBankAccountDialog(props: CreateBankAccountDialogPr
         setValue("linkCards", editProps.account?.linkedCards);
       }
 
+      clearErrors();
       setValue("mmid", editProps.account?.mmid);
       setValue("bankName", editProps.account?.bankName);
       setValue("ifscCode", editProps.account?.ifsc);
